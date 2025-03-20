@@ -1,0 +1,106 @@
+const ROLES = {
+  ADMIN: "admin",
+  USER: "user",
+};
+const MIN_YEAR = 1925;
+
+module.exports = {
+  ROLES,
+  MAX_BOOKS_ALLOWED: 5,
+  PASSWORD: {
+    SALT_ROUNDS: 10,
+  },
+  JWT: {
+    EXPIRATION: "30d",
+  },
+  MIN_YEAR,
+  REGEX: {
+    PHONE: /^[0-9]{10,11}$/,
+  },
+  BOOK_STATUS: {
+    AVAILABLE: "có thể mượn",
+    UNAVAILABLE: "không thể mượn",
+  },
+  LOAN_STATUS: {
+    PENDING: "chờ duyệt",
+    BORROWED: "đang mượn",
+    REJECTED: "từ chối",
+    OVERDUE: "quá hạn",
+    RETURNED: "đã trả",
+  },
+  BORROW: {
+    MAX_BORROW_DAYS: 14, // Số ngày tối đa có thể mượn sách
+    MAX_BOOKS: 5,
+  },
+  VALIDATION_MESSAGES: {
+    NOT_EMPTY: "Không được để trống",
+    PASSWORD_TOO_SHORT: "Mật khẩu phải có ít nhất 6 ký tự",
+    INVALID_BIRTHDATE: `Ngày sinh phải lớn hơn ${MIN_YEAR}`,
+    INVALID_PHONE: "Số điện thoại phải là số và có 10 hoặc 11 chữ số",
+    PHONE_EXISTS: "Số điện thoại đã được sử dụng",
+    INCORRECT_PASSWORD: "Mật khẩu không đúng",
+    INVALID_TOKEN: "Phiên đăng nhập không hợp lệ.",
+    INVALID_START_DATE: "Ngày mượn phải lớn hơn hoặc bằng ngày hiện tại",
+    INVALID_RETURN_DATE: "Ngày trả phải lớn hơn hoặc bằng ngày mượn.",
+    INVALID_QUANTITY: "Số lượng sách mượn không hợp lệ.",
+    LOAN_PERIOD: "Thời gian mượn không được quá 14 ngày",
+  },
+  ERROR: {
+    REGISTER_ERROR: "Lỗi đăng ký không thành công",
+    LOGIN_ERROR: "Lỗi đăng nhập không thành công",
+    SERVER_ERROR: "Lỗi máy chủ, vui lòng thử lại sau.",
+    ACCESS_DENIED: "Quyền truy cập bị từ chối.",
+    FORBIDDEN: "Không có quyền truy cập.",
+    LOAN_REGISTRATION_ERROR: "Lỗi khi đăng ký mượn sách",
+    USER_NOT_FOUND: "Không tìm thấy thông tin người dùng",
+    BOOK_NOT_FOUND: "Không tìm thấy sách",
+    LOAN_REQUEST_NOT_FOUND: "Không tìm thấy yêu cầu mượn sách",
+    LOAN_RECORD_NOT_FOUND: "Không tìm thấy bản ghi mượn sách",
+    PUBLISHER_NOT_FOUND: "Không tìm thấy nhà xuất bản",
+    MAX_BORROW_LIMIT: "Vượt quá số sách được phép mượn",
+    FETCH_ACCOUNT_LIST: "Lỗi khi lấy danh sách người dùng",
+    FETCH_PUBLISHER_LIST: "Lỗi khi lấy danh sách nhà xuất bản",
+    FETCH_BOOK_LIST: "Lỗi khi lấy danh sách các quyển sách",
+    FETCH_LOAN_REQUEST_LIST:
+      "Lỗi khi lấy danh sách đơn mượn sách của người dùng",
+    FETCH_BORROWED_BOOK_LIST: "Lỗi khi lấy danh sách mượn sách",
+    FIND_BY_NAME: "Lỗi khi tìm người dùng theo tên",
+    FIND_BOOK_BY_NAME: "Lỗi khi tìm sách theo tên",
+    FIND_BOOK_BY_AUHTOR: "Lỗi khi tìm sách theo tác giả",
+    FIND_BOOK_BY_PUBLISHER: "Lỗi khi tìm sách theo nhà xuất bản",
+    FIND_BY_PHONE: "Lỗi khi tìm người dùng theo số điện thoại",
+    CREATE_ACCOUNT_ERROR: "Lỗi khi tạo người dùng",
+    CREATE_PUBLISHER_ERROR: "Lỗi khi thêm nhà xuất bản",
+    CREATE_BOOK_ERROR: "Lỗi khi thêm sách",
+    UPDATE_ACCOUNT_ERROR: "Lỗi khi cập nhật người dùng",
+    UPDATE_PUBLISHER_ERROR: "Lỗi khi cập nhật nhà xuất bản",
+    UPDATE_BOOK_ERROR: "Lỗi khi cập nhật sách",
+    DELETE_ACCOUNT_ERROR: "Lỗi khi xóa người dùng",
+    DELETE_PUBLISHER_ERROR: "Lỗi khi xóa Nhà Xuất Bản",
+    DELETE_BOOK_ERROR: "Lỗi khi xóa sách",
+    INVALID_READER_ID: "Mã người dùng không hợp lệ.",
+    CANNOT_DELETE_PUBLISHER:
+      "Không thể xóa Nhà Xuất Bản vì đang có sách thuộc NXB này",
+    CANNOT_DELETE_BOOK: "Không thể xóa sách vì sách đang được mượn",
+    STATISTIC_ERROR: "Lỗi khi thống kê số lượng sách",
+  },
+  SUCCESS: {
+    REGISTER_SUCCESS: "Đăng ký thành công",
+    LOGIN_SUCCESS: "Đăng nhập thành công",
+    CREATE_ACCOUNT_SUCCESS: "Người dùng đã được tạo",
+    CREATE_PUBLISHER_SUCCESS: "Nhà xuất bản đã được thêm",
+    CREATE_BOOK_SUCCESS: "Sách đã được thêm",
+    UPDATE_ACCOUNT_SUCCESS: "Thông tin người dùng đã được cập nhật",
+    UPDATE_PUBLISHER_SUCCESS: "Thông tin nhà xuất bản đã được cập nhật",
+    UPDATE_BOOK_SUCCESS: "Sách đã được cập nhật",
+    DELETE_ACCOUNT_SUCCESS: "Người dùng đã được xóa",
+    DELETE_PUBLISHER_SUCCESS: "Nhà Xuất Bản đã được xóa",
+    DELETE_BOOK_SUCCESS: "Sách đã được xóa",
+  },
+  MESSAGES: {
+    BOOK_NOT_AVAILABLE: "Sách này hiện không có sẵn.",
+    MAX_BORROW_LIMIT_EXCEEDED:
+      "Bạn đã vượt quá số lượng sách có thể mượn cùng lúc.",
+    REQUEST_AWAIT_APPROVAL: "Yêu cầu mượn sách đã được gửi và đang chờ duyệt",
+  },
+};

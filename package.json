@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
-    "backend": "pnpm --filter backend dev",
+    "dev": "concurrently \"pnpm --filter backend start\" \"pnpm --filter frontend dev\"",
+    "backend": "pnpm --filter backend start",
     "frontend": "pnpm --filter frontend dev"
   },
   "keywords": [],
