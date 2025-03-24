@@ -7,7 +7,7 @@ const DocGia = require("../models/DocGia");
 const { ROLES, SUCCESS, ERROR, PASSWORD } = require("../constants");
 
 // Liệt kê danh sách độc giả
-router.get("/", auth, async (req, res) => {
+router.get("/", auth([]), async (req, res) => {
   try {
     const danhSachDocGia = await DocGia.find();
     res.json(danhSachDocGia);
@@ -17,7 +17,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 // Tìm kiếm độc giả theo tên
-router.get("/timkiem/ten", auth, async (req, res) => {
+router.get("/timkiem/ten", auth([]), async (req, res) => {
   try {
     const { Ten } = req.query;
     const ketQua = await DocGia.find({ Ten: Ten });
@@ -51,7 +51,7 @@ router.post("/add", auth([ROLES.ADMIN]), async (req, res) => {
   }
 });
 
-router.put("/edit/:id", auth, async (req, res) => {
+router.put("/edit/:id", auth([]), async (req, res) => {
   try {
     const { id } = req.params;
     const { Password, ...otherFields } = req.body; // Tách riêng Password để xử lý riêng

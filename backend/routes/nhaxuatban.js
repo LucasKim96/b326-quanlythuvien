@@ -7,7 +7,7 @@ const Sach = require("../models/Sach");
 const { ERROR, ROLES, SUCCESS } = require("../constants");
 
 // Liệt kê danh sách nhà xuất bản
-router.get("/", auth, async (req, res) => {
+router.get("/", auth([]), async (req, res) => {
   try {
     const danhSachNhaXuatBan = await NhaXuatBan.find();
     res.json(danhSachNhaXuatBan);

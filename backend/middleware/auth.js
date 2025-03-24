@@ -10,13 +10,16 @@ module.exports = (roles = []) => {
 
     try {
       const verified = jwt.verify(token, process.env.JWT_SECRET);
+
       req.user = {
         id: verified.id,
-        role: verified.VaiTro,
+        role: verified.role,
       };
+      console.log("Assigned user:", req.user);
 
       // Nếu không truyền roles => cho phép tất cả người dùng có token
       if (roles.length && !roles.includes(req.user.role)) {
+        console.log("User role không hợp lệ:", req.user.role);
         return res.status(403).json({ message: ERROR.FORBIDDEN });
       }
 

@@ -1,3 +1,4 @@
+// controllers/authController.js
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const NhanVien = require("../models/NhanVien");
@@ -100,7 +101,7 @@ exports.login = async (req, res) => {
 
     // Tạo token với vai trò người dùng
     const token = jwt.sign({ id: user._id, role }, process.env.JWT_SECRET, {
-      expiresIn: "30d",
+      expiresIn: "1h",
     });
 
     // Trả về token, role và thông tin người dùng

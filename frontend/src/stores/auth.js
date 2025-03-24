@@ -2,12 +2,13 @@
 import { defineStore } from "pinia";
 import axios from "axios";
 import { useRouter } from "vue-router";
+import { nextTick } from "vue";
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: localStorage.getItem("token") || null,
     user: JSON.parse(localStorage.getItem("user")) || null,
-    role: localStorage.getItem("role") || null
+    role: localStorage.getItem("role") || null,
   }),
 
   actions: {
@@ -15,8 +16,11 @@ export const useAuthStore = defineStore("auth", {
     async login(credentials) {
       try {
         console.log("Starting login process");
-        const response = await axios.post("http://localhost:5000/api/auth/login", credentials);
-        
+        const response = await axios.post(
+          "http://localhost:5000/api/auth/login",
+          credentials
+        );
+
         console.log("Login response:", response.data);
 
         this.token = response.data.token;
@@ -30,6 +34,9 @@ export const useAuthStore = defineStore("auth", {
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
 
         console.log("User updated:", this.user);
+
+        await nextTick();
+        // window.location.reload();
       } catch (error) {
         console.error("Lỗi đăng nhập:", error);
         alert(error.response.data.message);
@@ -40,7 +47,10 @@ export const useAuthStore = defineStore("auth", {
     async register(data) {
       try {
         await axios.post("http://localhost:5000/api/auth/register", data);
-        await this.login({ SoDienThoai: data.SoDienThoai, Password: data.Password });
+        await this.login({
+          SoDienThoai: data.SoDienThoai,
+          Password: data.Password,
+        });
       } catch (error) {
         console.error("Lỗi đăng ký:", error);
         alert(error.response.data.message);
@@ -63,7 +73,7 @@ export const useAuthStore = defineStore("auth", {
       if (this.token) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
         try {
-          const response = await axios.get("http://localhost:5000/api/auth/me"); 
+          const response = await axios.get("http://localhost:5000/api/auth/me");
           this.user = response.data.user;
           this.role = response.data.user.Role;
 
@@ -76,14 +86,14 @@ export const useAuthStore = defineStore("auth", {
           alert(error.response.data.message);
         }
       }
-    }
-  }
+    },
+  },
 });
 
 // Interceptor xử lý lỗi 401 toàn cục
 axios.interceptors.response.use(
-  response => response,
-  error => {
+  (response) => response,
+  (error) => {
     if (error.response && error.response.status === 401) {
       const authStore = useAuthStore();
       authStore.logout();

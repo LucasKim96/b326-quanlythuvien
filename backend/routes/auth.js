@@ -11,7 +11,7 @@ router.post("/register", authController.register);
 
 router.post("/login", authController.login);
 
-router.get("/me", auth, async (req, res) => {
+router.get("/me", auth([]), async (req, res) => {
   try {
     const user = await (req.user.role === ROLES.ADMIN
       ? NhanVien.findById(req.user.id)

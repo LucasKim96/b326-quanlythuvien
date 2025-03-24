@@ -12,7 +12,7 @@ const {
 } = require("../constants");
 
 // Lấy danh sách các bản ghi mượn sách (admin và user)
-router.get("/", auth, async (req, res) => {
+router.get("/", auth([]), async (req, res) => {
   try {
     const muonSachList = await TheoDoiMuonSach.find()
       .populate("MaSach", "TenSach")
@@ -24,7 +24,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 // Lấy danh sách đơn mượn sách của một người dùng cụ thể (admin và user)
-router.get("/user/:userId", auth, async (req, res) => {
+router.get("/user/:userId", auth([]), async (req, res) => {
   try {
     const userId = req.params.userId;
 
@@ -48,7 +48,7 @@ router.get("/user/:userId", auth, async (req, res) => {
 });
 
 // Đăng ký mượn sách mới (user)
-router.post("/request", auth, async (req, res) => {
+router.post("/request", auth([]), async (req, res) => {
   try {
     const { MaDocGia, MaSach, NgayMuon, NgayTra } = req.body;
 

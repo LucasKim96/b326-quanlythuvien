@@ -8,7 +8,7 @@ const TheoDoiMuonSach = require("../models/TheoDoiMuonSach");
 const { ERROR, ROLES, SUCCESS } = require("../constants");
 
 // Liệt kê tất cả các sách
-router.get("/", auth, async (req, res) => {
+router.get("/", auth([]), async (req, res) => {
   try {
     const danhSachSach = await Sach.find();
     res.json(danhSachSach);
@@ -18,7 +18,7 @@ router.get("/", auth, async (req, res) => {
 });
 
 // Tìm kiếm sách theo tên
-router.get("/timkiem/tensach", auth, async (req, res) => {
+router.get("/timkiem/tensach", auth([]), async (req, res) => {
   try {
     const { TenSach } = req.query;
     const ketQua = await Sach.find({
@@ -31,7 +31,7 @@ router.get("/timkiem/tensach", auth, async (req, res) => {
 });
 
 // Tìm kiếm sách theo tác giả
-router.get("/timkiem/tacgia", auth, async (req, res) => {
+router.get("/timkiem/tacgia", auth([]), async (req, res) => {
   try {
     const { TacGia } = req.query;
     const ketQua = await Sach.find({
@@ -44,7 +44,7 @@ router.get("/timkiem/tacgia", auth, async (req, res) => {
 });
 
 // Tìm kiếm sách theo nhà xuất bản
-router.get("/timkiem/nxb", auth, async (req, res) => {
+router.get("/timkiem/nxb", auth([]), async (req, res) => {
   try {
     const { MaNXB } = req.query;
     const ketQua = await Sach.find({ MaNXB });
