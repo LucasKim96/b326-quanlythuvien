@@ -2,7 +2,7 @@ sau khi tải .zip về thì chạy pnpm install
 
 pnpm dev: để chạy be + fe
 pnpm backend: chạy be
-pnpm frontend: chạy fr
+pnpm frontend: chạy fe
 
 chi tiết xem trong package.json ở thư mục gốc
 
