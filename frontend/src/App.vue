@@ -5,17 +5,17 @@
 </template>
 
 <script>
-import { useAuthStore } from './stores/auth';
-import { onMounted } from 'vue';
+import { useAuthStore } from "./stores/auth";
+import { onMounted } from "vue";
 
 export default {
   setup() {
     const authStore = useAuthStore();
 
     onMounted(() => {
-      authStore.fetchUserIfTokenExists(); 
+      authStore.fetchUserIfTokenExists();
     });
-  }
+  },
 };
 </script>
 

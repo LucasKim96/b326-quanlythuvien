@@ -15,7 +15,7 @@ module.exports = (roles = []) => {
         id: verified.id,
         role: verified.role,
       };
-      console.log("Assigned user:", req.user);
+      // console.log("Assigned user:", req.user);
 
       // Nếu không truyền roles => cho phép tất cả người dùng có token
       if (roles.length && !roles.includes(req.user.role)) {

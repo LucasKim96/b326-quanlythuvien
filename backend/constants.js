@@ -18,15 +18,15 @@ module.exports = {
     PHONE: /^[0-9]{10,11}$/,
   },
   BOOK_STATUS: {
-    AVAILABLE: "có thể mượn",
-    UNAVAILABLE: "không thể mượn",
+    AVAILABLE: "Có thể mượn",
+    UNAVAILABLE: "Không thể mượn",
   },
   LOAN_STATUS: {
-    PENDING: "chờ duyệt",
-    BORROWED: "đang mượn",
-    REJECTED: "từ chối",
-    OVERDUE: "quá hạn",
-    RETURNED: "đã trả",
+    PENDING: "Chờ duyệt",
+    BORROWED: "Đang mượn",
+    REJECTED: "Từ chối",
+    OVERDUE: "Quá hạn",
+    RETURNED: "Đã trả",
   },
   BORROW: {
     MAX_BORROW_DAYS: 14, // Số ngày tối đa có thể mượn sách

@@ -53,11 +53,14 @@ router.post("/request", auth([]), async (req, res) => {
     const { MaDocGia, MaSach, NgayMuon, NgayTra } = req.body;
 
     // Kiểm tra ngày trả phải sau ngày mượn
-    const today = new Date(); // Ngày hiện tại
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     const startDate = new Date(NgayMuon);
     const endDate = new Date(NgayTra);
+    startDate.setHours(0, 0, 0, 0); // Đặt về đầu ngày
+    endDate.setHours(0, 0, 0, 0); // Đặt về đầu ngày
 
-    if (startDate < today) {
+    if (startDate.getTime() < today.getTime()) {
       return res
         .status(400)
         .json({ message: VALIDATION_MESSAGES.INVALID_START_DATE });
@@ -175,6 +178,42 @@ router.put("/return/:id", auth([ROLES.ADMIN]), async (req, res) => {
   } catch (error) {
     console.error("Error returning loaned book:", error);
     res.status(500).json({ message: "Lỗi khi cập nhật trạng thái trả sách" });
+  }
+});
+
+// Từ chối yêu cầu mượn sách (chỉ admin)
+router.put("/reject/:id", auth([ROLES.ADMIN]), async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    // Lấy yêu cầu mượn sách hiện tại
+    const currentMuonSach = await TheoDoiMuonSach.findById(id);
+
+    // Kiểm tra xem yêu cầu mượn sách có tồn tại và trạng thái hiện tại có phải là "Chờ duyệt" hay không
+    if (!currentMuonSach) {
+      return res.status(404).json({ message: ERROR.LOAN_REQUEST_NOT_FOUND });
+    }
+
+    if (currentMuonSach.TrangThai !== LOAN_STATUS.PENDING) {
+      return res.status(400).json({
+        message: `Chỉ có thể từ chối các yêu cầu mượn sách đang ở trạng thái ${LOAN_STATUS.PENDING}`,
+      });
+    }
+
+    // Cập nhật trạng thái thành "Từ chối"
+    const updatedMuonSach = await TheoDoiMuonSach.findByIdAndUpdate(
+      id,
+      { TrangThai: LOAN_STATUS.REJECTED },
+      { new: true }
+    );
+
+    res.json({
+      message: "Yêu cầu mượn sách đã bị từ chối",
+      muonSach: updatedMuonSach,
+    });
+  } catch (error) {
+    console.error("Error rejecting loan request:", error);
+    res.status(500).json({ message: "Lỗi khi từ chối yêu cầu mượn sách" });
   }
 });
 
