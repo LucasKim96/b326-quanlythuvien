@@ -24,8 +24,8 @@ async function createAdmin() {
     const newAdmin = new NhanVien({
       HoTenNV: "Van Lam",
       Password: hashedPassword,
-      ChucVu: "Nhân viên",
-      DiaChi: "CT",
+      ChucVu: "BOSS",
+      DiaChi: "TP",
       SoDienThoai: "0341111111",
       Role: ROLES.ADMIN,
     });
