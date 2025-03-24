@@ -1,22 +1,33 @@
-require("dotenv").config();
+const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const NhanVien = require("./models/NhanVien");
 const { ROLES, PASSWORD } = require("./constants");
 
+dotenv.config();
+
+// Kiểm tra biến môi trường
+const uri = process.env.MONGODB_URI;
+if (!uri) {
+  throw new Error("MONGODB_URI không được định nghĩa trong .env");
+}
+
 // Kết nối CSDL
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+mongoose
+  .connect(uri, {})
+  .then(() => console.log("Kết nối MongoDB thành công"))
+  .catch((err) => {
+    console.error("Lỗi kết nối MongoDB:", err);
+    process.exit(1);
+  });
 
 async function createAdmin() {
   try {
-    const existingAdmin = await NhanVien.findOne({ role: ROLES.ADMIN });
+    const existingAdmin = await NhanVien.findOne({ Role: ROLES.ADMIN });
 
     if (existingAdmin) {
-      console.log("Admin đã tồn tại!");
-      return process.exit();
+      console.log("Admin đã tồn tại! Thoát script...");
+      return;
     }
 
     const hashedPassword = await bcrypt.hash("vanlam", PASSWORD.SALT_ROUNDS);
@@ -35,7 +46,8 @@ async function createAdmin() {
   } catch (error) {
     console.error("Lỗi khi tạo Admin:", error);
   } finally {
-    mongoose.connection.close();
+    await mongoose.connection.close();
+    process.exit(); // Thoát chương trình sau khi hoàn tất
   }
 }
 
