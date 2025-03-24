@@ -11,7 +11,6 @@ export const fetchnhanviens = async () => {
   } catch (error) {
     console.error("Error fetching nhanviens:", error);
     alert(error.response.data.message);
-
   }
 };
 
@@ -23,24 +22,24 @@ export const addnhanvien = async (newnhanvien) => {
   } catch (error) {
     console.error("Error adding nhanvien:", error);
     alert(error.response.data.message);
-
   }
 };
 
 // Hàm cập nhật thông tin nhân viên
-export const updatenhanvien = async (updatednhanvien, formvalue) => {
+export const updatenhanvien = async (updatednhanvien) => {
   try {
-    await axios.put(`http://localhost:5000/api/nhanvien/edit/${updatednhanvien._id}`, formvalue);
+    await axios.put(
+      `http://localhost:5000/api/nhanvien/edit/${updatednhanvien._id}`,
+      updatednhanvien
+    );
     await fetchnhanviens();
   } catch (error) {
     console.error("Error updating nhanvien:", error);
     alert(error.response.data.message);
-
   }
 };
 
 import { useAuthStore } from "./auth";
-
 
 export const deletenhanvien = async (id) => {
   try {
@@ -57,6 +56,5 @@ export const deletenhanvien = async (id) => {
   } catch (error) {
     console.error("Error deleting nhanvien:", error);
     alert(error.response.data.message);
-
   }
 };

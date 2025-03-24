@@ -6,7 +6,7 @@ module.exports = (roles = []) => {
   return (req, res, next) => {
     const token = req.header("Authorization")?.split(" ")[1];
 
-    if (!token) return res.status(401).json({ message: ERROR.ACCESS_DENIED });
+    if (!token) return res.status(402).json({ message: ERROR.ACCESS_DENIED });
 
     try {
       const verified = jwt.verify(token, process.env.JWT_SECRET);
@@ -25,7 +25,7 @@ module.exports = (roles = []) => {
 
       next();
     } catch (error) {
-      res.status(400).json({ message: VALIDATION_MESSAGES.INVALID_TOKEN });
+      res.status(401).json({ message: VALIDATION_MESSAGES.INVALID_TOKEN });
     }
   };
 };

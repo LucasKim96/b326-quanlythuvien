@@ -3,7 +3,7 @@
   <div class="table-container">
     <div class="header">
       <h2 class="section-title">Quản lý sách</h2>
-      <button class="add-book-button" @click="openAddBookForm">Thêm sách</button>
+      <button class="add-button" @click="openAddBookForm">Thêm sách</button>
     </div>
     <table class="table">
       <thead>
@@ -22,8 +22,15 @@
           <td>{{ book.DonGia }}</td>
           <td>{{ book.SoQuyen }}</td>
           <td>
-            <a href="#" @click.prevent="openEditForm(book)" class="edit-link">Edit</a>
-            <a href="#" class="delete-link" @click.prevent="deleteBookData(book)">Delete</a>
+            <a href="#" @click.prevent="openEditForm(book)" class="edit-link"
+              >Edit</a
+            >
+            <a
+              href="#"
+              class="delete-link"
+              @click.prevent="deleteBookData(book)"
+              >Delete</a
+            >
           </td>
         </tr>
       </tbody>
@@ -63,7 +70,7 @@
         </form>
       </div>
     </div>
-    <div v-if="isAddBookModalOpen" class="add-book-modal">
+    <div v-if="isAddBookModalOpen" class="add-modal">
       <div class="modal-content">
         <h3>Thêm sách mới</h3>
         <form @submit.prevent="addBook">
@@ -100,8 +107,14 @@
 </template>
 
 <script setup>
-import { books, fetchBooks, updateBook, addBook, deleteBook  } from "../stores/sach.js";
-import { nxbs, fetchNxbs  } from "../stores/nhaxuatban.js";
+import {
+  books,
+  fetchBooks,
+  updateBook,
+  addBook,
+  deleteBook,
+} from "../stores/sach.js";
+import { nxbs, fetchNxbs } from "../stores/nhaxuatban.js";
 import { ref, onMounted } from "vue";
 
 const isEditModalOpen = ref(false);
@@ -167,79 +180,3 @@ onMounted(() => {
   fetchNxbs();
 });
 </script>
-
-<style scoped>
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-/* Styles for the "Thêm sách" button */
-.add-book-button {
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-}
-.add-book-button:hover {
-  background-color: #3730a3;
-}
-
-/* Styles for the add book modal */
-.add-book-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  width: 400px;
-}
-.modal-content h3 {
-  margin-top: 0;
-}
-
-.edit-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-content {
-  background-color: white;
-  padding: 20px;
-  border-radius: 5px;
-  width: 400px;
-}
-
-.modal-content h3 {
-  margin-bottom: 10px;
-}
-
-.modal-content form label {
-  display: block;
-  margin: 10px 0;
-}
-
-.modal-content form button {
-  margin-right: 10px;
-}
-</style>

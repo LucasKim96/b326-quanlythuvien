@@ -1,8 +1,14 @@
 <template>
   <div class="table-container">
     <div class="header">
-      <h2 class="section-title">Quản lý Độc Giả</h2>
-      <button class="add-docgia-button" @click="openAddDocGiaForm">Thêm Độc Giả</button>
+      <div class="header-left">
+        <h2 class="section-title">Quản lý Độc Giả</h2>
+      </div>
+      <div class="header-right">
+        <button class="btn-primary add-button" @click="openAddDocGiaForm">
+          Thêm Độc Giả
+        </button>
+      </div>
     </div>
     <table class="table">
       <thead>
@@ -25,54 +31,146 @@
           <td>{{ docgia.DiaChi }}</td>
           <td>{{ docgia.SoDienThoai }}</td>
           <td>
-            <a href="#" @click.prevent="openEditForm(docgia)" class="edit-link">Edit</a>
-            <a href="#" @click.prevent="deleteDocGiaData(docgia._id)" class="delete-link">Delete</a>
+            <font-awesome-icon
+              icon="fa-edit"
+              @click.prevent="openEditForm(docgia)"
+              class="edit-icon"
+              style="cursor: pointer; margin-right: 10px"
+            />
+            <font-awesome-icon
+              icon="fa-trash-alt"
+              @click.prevent="deleteDocGiaData(docgia._id)"
+              class="delete-icon"
+              style="cursor: pointer; color: red"
+            />
           </td>
         </tr>
       </tbody>
     </table>
 
-    <!-- Form chỉnh sửa độc giả -->
+    <!-- form chỉnh sửa thông tin độc giả -->
     <div v-if="isEditModalOpen" class="edit-modal">
       <div class="modal-content">
         <h3>Chỉnh sửa thông tin Độc Giả</h3>
         <form @submit.prevent="updateDocGiaData">
-          <label>Họ Lót: <input v-model="editDocGia.HoLot" type="text" required /></label>
-          <label>Tên: <input v-model="editDocGia.Ten" type="text" required /></label>
-          <label>Ngày Sinh: <input v-model="editDocGia.NgaySinh" type="date" required /></label>
-          <label>Phái:
-            <select v-model="editDocGia.Phai" required>
-              <option value="Nam">Nam</option>
-              <option value="Nữ">Nữ</option>
-            </select>
-          </label>
-          <label>Địa Chỉ: <input v-model="editDocGia.DiaChi" type="text" required /></label>
-          <label>Số Điện Thoại: <input v-model="editDocGia.SoDienThoai" type="text" required /></label>
-          <button type="submit">Cập nhật</button>
-          <button @click.prevent="closeEditForm">Hủy</button>
+          <div class="form-container">
+            <div class="form-group">
+              <label>Họ Lót:</label>
+              <input v-model="editDocGia.HoLot" type="text" required />
+            </div>
+            <div class="form-group">
+              <label>Tên:</label>
+              <input v-model="editDocGia.Ten" type="text" required />
+            </div>
+            <div class="form-group">
+              <label>Ngày Sinh:</label>
+              <input v-model="editDocGia.NgaySinh" type="date" required />
+            </div>
+            <div class="form-group">
+              <label>Phái:</label>
+              <select v-model="editDocGia.Phai" required>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Địa Chỉ:</label>
+              <input v-model="editDocGia.DiaChi" type="text" required />
+            </div>
+            <div class="form-group">
+              <label>Số Điện Thoại:</label>
+              <input v-model="editDocGia.SoDienThoai" type="text" required />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Cập nhật</button>
+              <button @click.prevent="closeEditForm" class="btn-secondary">
+                Hủy
+              </button>
+            </div>
+          </div>
         </form>
       </div>
     </div>
 
-    <!-- Form thêm độc giả -->
-    <div v-if="isAddDocGiaModalOpen" class="add-docgia-modal">
+    <!-- forn thêm độc giả mới -->
+    <div v-if="isAddDocGiaModalOpen" class="add-modal">
       <div class="modal-content">
         <h3>Thêm Độc Giả Mới</h3>
-        <form @submit.prevent="addDocGiaData">
-          <label>Họ Lót: <input v-model="newDocGia.HoLot" type="text" required /></label>
-          <label>Tên: <input v-model="newDocGia.Ten" type="text" required /></label>
-          <label>Ngày Sinh: <input v-model="newDocGia.NgaySinh" type="date" required /></label>
-          <label>Phái:
-            <select v-model="newDocGia.Phai" required>
+        <form @submit.prevent="addDocGiaData" class="form-container">
+          <div class="form-group">
+            <label for="ho-lot">Họ Lót:</label>
+            <input id="ho-lot" v-model="newDocGia.HoLot" type="text" required />
+          </div>
+
+          <div class="form-group">
+            <label for="ten">Tên:</label>
+            <input id="ten" v-model="newDocGia.Ten" type="text" required />
+          </div>
+
+          <div class="form-group">
+            <label for="ngay-sinh">Ngày Sinh:</label>
+            <input
+              id="ngay-sinh"
+              v-model="newDocGia.NgaySinh"
+              type="date"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="phai">Phái:</label>
+            <select id="phai" v-model="newDocGia.Phai" required>
               <option value="Nam">Nam</option>
               <option value="Nữ">Nữ</option>
             </select>
-          </label>
-          <label>Địa Chỉ: <input v-model="newDocGia.DiaChi" type="text" required /></label>
-          <label>Số Điện Thoại: <input v-model="newDocGia.SoDienThoai" type="text" required /></label>
-          <label>Mật Khẩu: <input v-model="newDocGia.Password" type="password" required /></label>
-          <button type="submit">Thêm Độc Giả</button>
-          <button @click.prevent="closeAddDocGiaForm">Hủy</button>
+          </div>
+
+          <div class="form-group">
+            <label for="dia-chi">Địa Chỉ:</label>
+            <input
+              id="dia-chi"
+              v-model="newDocGia.DiaChi"
+              type="text"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="so-dt">Số Điện Thoại:</label>
+            <input
+              id="so-dt"
+              v-model="newDocGia.SoDienThoai"
+              type="text"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Mật Khẩu:</label>
+            <div class="input-wrapper">
+              <input
+                id="password"
+                v-model="newDocGia.Password"
+                :type="isPasswordVisible ? 'text' : 'password'"
+                required
+              />
+              <span
+                @click="isPasswordVisible = !isPasswordVisible"
+                class="eye-icon"
+              >
+                <i
+                  :class="isPasswordVisible ? 'fas fa-eye-slash' : 'fas fa-eye'"
+                ></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Thêm Độc Giả</button>
+            <button @click.prevent="closeAddDocGiaForm" class="btn-secondary">
+              Hủy
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -81,7 +179,19 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { docgias, fetchDocGias, addDocGia, updateDocGia, deleteDocGia } from "../stores/docgia.js";
+import "@/assets/main.css";
+import {
+  docgias,
+  fetchDocGias,
+  addDocGia,
+  updateDocGia,
+  deleteDocGia,
+} from "../stores/docgia.js";
+
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+library.add(faEdit, faTrashAlt);
 
 const isEditModalOpen = ref(false);
 const editDocGia = ref({});
@@ -93,7 +203,7 @@ const newDocGia = ref({
   Phai: "",
   DiaChi: "",
   SoDienThoai: "",
-  Password: ""
+  Password: "",
 });
 
 const formatDate = (date) => {
@@ -101,9 +211,7 @@ const formatDate = (date) => {
 };
 
 const openEditForm = (docgia) => {
-  editDocGia.value = { ...docgia,
-    NgaySinh: formatDate(docgia.NgaySinh),
-   }; // Clone data for editing
+  editDocGia.value = { ...docgia, NgaySinh: formatDate(docgia.NgaySinh) }; // Clone data for editing
   isEditModalOpen.value = true;
 };
 
@@ -138,51 +246,6 @@ const deleteDocGiaData = async (id) => {
   }
 };
 
+const isPasswordVisible = ref(false);
 onMounted(fetchDocGias);
 </script>
-
-<style scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.add-docgia-button {
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-}
-.add-docgia-button:hover {
-  background-color: #3730a3;
-}
-.add-docgia-modal, .edit-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  width: 400px;
-}
-.modal-content h3 {
-  margin-top: 0;
-}
-.modal-content form label {
-  display: block;
-  margin: 10px 0;
-}
-.modal-content form button {
-  margin-right: 10px;
-}
-</style>
