@@ -16,12 +16,13 @@ export const useAuthStore = defineStore("auth", {
     async login(credentials) {
       try {
         console.log("Starting login process");
+
         const response = await axios.post(
           "http://localhost:5000/api/auth/login",
           credentials
         );
 
-        console.log("Login response:", response.data);
+        // console.log("Login response:", response.data);
 
         this.token = response.data.token;
         this.user = response.data.user;
@@ -33,10 +34,9 @@ export const useAuthStore = defineStore("auth", {
         localStorage.setItem("user", JSON.stringify(this.user));
         axios.defaults.headers.common["Authorization"] = `Bearer ${this.token}`;
 
-        console.log("User updated:", this.user);
+        // console.log("User updated:", this.user);
 
         await nextTick();
-        // window.location.reload();
       } catch (error) {
         console.error("Lỗi đăng nhập:", error);
         alert(error.response.data.message);

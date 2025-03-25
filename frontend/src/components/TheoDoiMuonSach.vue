@@ -1,8 +1,14 @@
 <template>
   <div class="table-container">
     <div class="header">
-      <h2 class="section-title">Quản lý mượn sách</h2>
-      <button class="add-request-button" @click="openAddRequestForm">Thêm đơn mượn sách</button>
+      <div class="header-left">
+        <h2 class="section-title">Quản lý mượn sách</h2>
+      </div>
+      <div class="header-right">
+        <button class="btn-primary add-button" @click="openAddRequestForm">
+          Thêm đơn mượn sách
+        </button>
+      </div>
     </div>
     <table class="table">
       <thead>
@@ -26,90 +32,118 @@
               :class="{
                 'status-approved': record.TrangThai === 'Đã trả',
                 'status-pending': record.TrangThai === 'Đang mượn',
-                'status-waiting': record.TrangThai === 'Chờ duyệt'
+                'status-waiting': record.TrangThai === 'Chờ duyệt',
               }"
             >
               {{ record.TrangThai }}
             </span>
           </td>
           <td>
-            <a href="#" @click.prevent="showDetail(record)" class="detail-link">Chi tiết</a>
+            <a href="#" @click.prevent="showDetail(record)" class="detail-link"
+              >Chi tiết</a
+            >
           </td>
         </tr>
       </tbody>
     </table>
 
     <!-- Modal chi tiết đơn mượn sách (có thể chỉnh sửa) -->
-    <div v-if="isDetailModalOpen" class="detail-modal">
+    <div v-if="isDetailModalOpen" class="edit-modal">
       <div class="modal-content">
         <h3>Chi tiết đơn mượn sách</h3>
-        <form @submit.prevent="updateRequestData">
-          <label>
-            Mã Sách:
-              <input type="text" v-model="detailRecord.MaSach._id" />
-          </label>
-          <label>
-            Tên Sách:
-            <input type="text" v-model="detailRecord.MaSach.TenSach" />
-          </label>
-          <label>
-            Mã Độc Giả:
-            <input type="text" v-model="detailRecord.MaDocGia._id" />
-          </label>
-          <label>
-            Tên Độc Giả:
-            <input type="text" v-model="detailRecord.MaDocGia.Ten" />
-          </label>
-          <label>
-            Số Điện Thoại Độc Giả:
-            <input type="text" v-model="detailRecord.MaDocGia.SoDienThoai" />
-          </label>
-          <label>
-            Ngày Mượn:
-            <input type="date" :value="formatDate(detailRecord.NgayMuon)" required />
-          </label>
-          <label>
-            Ngày Trả:
-            <input type="date" :value="formatDate(detailRecord.NgayTra)" required />
-          </label>
-          <label>
-            Trạng Thái:
-            <input type="text" v-model="detailRecord.TrangThai" disabled/>
-          </label>
+        <form @submit.prevent="updateRequestData" class="form-container">
+          <div class="form-group">
+            <label> Mã Sách: </label
+            ><input type="text" v-model="detailRecord.MaSach._id" />
+          </div>
+          <div class="form-group">
+            <label> Tên Sách: </label
+            ><input type="text" v-model="detailRecord.MaSach.TenSach" />
+          </div>
+          <div class="form-group">
+            <label> Mã Độc Giả: </label
+            ><input type="text" v-model="detailRecord.MaDocGia._id" />
+          </div>
+          <div class="form-group">
+            <label> Tên Độc Giả: </label
+            ><input type="text" v-model="detailRecord.MaDocGia.Ten" />
+          </div>
+          <div class="form-group">
+            <label> SĐT Độc Giả: </label
+            ><input type="text" v-model="detailRecord.MaDocGia.SoDienThoai" />
+          </div>
+          <div class="form-group">
+            <label> Ngày Mượn: </label
+            ><input
+              type="date"
+              :value="formatDate(detailRecord.NgayMuon)"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label> Ngày Trả: </label
+            ><input
+              type="date"
+              :value="formatDate(detailRecord.NgayTra)"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label> Trạng Thái: </label
+            ><input type="text" v-model="detailRecord.TrangThai" disabled />
+          </div>
 
-          <div class="modal-actions">
-            <button @click="approveRequestdata(detailRecord)">Duyệt</button>
-            <button @click="markReturneddata(detailRecord)">Trả</button>
-            <button @click="deleteRecorddata(detailRecord._id)">Xóa</button>
-            <button @click="closeDetailModal">Đóng</button>
+          <div class="form-actions">
+            <button
+              @click="approveRequestdata(detailRecord)"
+              class="btn-primary"
+            >
+              Duyệt
+            </button>
+            <button @click="markReturneddata(detailRecord)" class="btn-primary">
+              Trả
+            </button>
+            <button
+              @click="deleteRecorddata(detailRecord._id)"
+              class="btn-primary"
+            >
+              Xóa
+            </button>
+            <button @click="closeDetailModal" class="btn-secondary">
+              Đóng
+            </button>
           </div>
         </form>
       </div>
     </div>
 
     <!-- Form thêm đơn mượn sách mới -->
-    <div v-if="isAddRequestModalOpen" class="add-request-modal">
+    <div v-if="isAddRequestModalOpen" class="add-modal">
       <div class="modal-content">
-        <h3>Thêm đơn mượn sách mới</h3>
-        <form @submit.prevent="addRequestData">
-          <label>
-            Tên Sách:
-            <input type="text" v-model="newRequest.TenSach"/>
-          </label>
-          <label>
-            Tên Độc Giả:
-            <input type="text" v-model="newRequest.TenDocGia"/>
-          </label>
-          <label>
-            Ngày Mượn:
-            <input v-model="newRequest.NgayMuon" type="date" required />
-          </label>
-          <label>
-            Ngày Trả:
-            <input v-model="newRequest.NgayTra" type="date" required />
-          </label>
-          <button type="submit">Thêm đơn mượn</button>
-          <button @click.prevent="closeAddRequestForm">Hủy</button>
+        <h3>Thêm Đơn Mượn Sách Mới</h3>
+        <form @submit.prevent="addRequestData" class="form-container">
+          <div class="form-group">
+            <label> Tên Sách: </label
+            ><input type="text" v-model="newRequest.TenSach" />
+          </div>
+          <div class="form-group">
+            <label> SĐT Độc Giả: </label
+            ><input type="text" v-model="newRequest.SDTDocGia" />
+          </div>
+          <div class="form-group">
+            <label> Ngày Mượn: </label
+            ><input v-model="newRequest.NgayMuon" type="date" required />
+          </div>
+          <div class="form-group">
+            <label> Ngày Trả: </label
+            ><input v-model="newRequest.NgayTra" type="date" required />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Thêm đơn mượn</button>
+            <button @click.prevent="closeAddRequestForm" class="btn-secondary">
+              Hủy
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -118,7 +152,14 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { fetchRecords, approveRequest, markReturned, deleteRecord, updateRequest, addRequest } from "../stores/theodoimuonsach";
+import {
+  fetchRecords,
+  approveRequest,
+  markReturned,
+  deleteRecord,
+  updateRequest,
+  addRequest,
+} from "../stores/theodoimuonsach";
 
 const records = ref([]);
 
@@ -164,7 +205,7 @@ const deleteRecorddata = async (id) => {
 const isAddRequestModalOpen = ref(false);
 const newRequest = ref({
   TenSach: "",
-  TenDocGia: "",
+  SDTDocGia: "",
   NgayMuon: "",
   NgayTra: "",
 });
@@ -179,7 +220,7 @@ const closeAddRequestForm = () => {
   isAddRequestModalOpen.value = false;
   newRequest.value = {
     TenSach: "",
-    TenDocGia: "",
+    SDTDocGia: "",
     NgayMuon: "",
     NgayTra: "",
   };
@@ -205,104 +246,23 @@ const formatDate = (date) => {
 // Cập nhật thông tin đơn mượn sách
 const updateRequestData = async () => {
   const requestData = {
-        MaSach: detailRecord.value.MaSach,
-        MaDocGia: detailRecord.value.MaDocGia,
-        NgayMuon: detailRecord.value.NgayMuon,
-        NgayTra: detailRecord.value.NgayTra,
-        TrangThai: detailRecord.value.TrangThai,
-    };
+    MaSach: detailRecord.value.MaSach,
+    MaDocGia: detailRecord.value.MaDocGia,
+    NgayMuon: detailRecord.value.NgayMuon,
+    NgayTra: detailRecord.value.NgayTra,
+    TrangThai: detailRecord.value.TrangThai,
+  };
 
-    try {
-        await updateRequest(detailRecord.value._id, requestData); // Giả sử updateRequest chấp nhận ID và dữ liệu mới
-        await loadRecords(); // Làm mới danh sách sau khi cập nhật
-        closeDetailModal();
-    } catch (error) {
-        console.error("Error updating request:", error);
-    }
+  try {
+    await updateRequest(detailRecord.value._id, requestData); // Giả sử updateRequest chấp nhận ID và dữ liệu mới
+    await loadRecords(); // Làm mới danh sách sau khi cập nhật
+    closeDetailModal();
+  } catch (error) {
+    console.error("Error updating request:", error);
+  }
 };
 
 onMounted(() => {
   loadRecords();
 });
 </script>
-
-<style scoped>
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-}
-.add-request-button {
-  background-color: #4f46e5;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-}
-.add-request-button:hover {
-  background-color: #3730a3;
-}
-.add-request-modal,
-.detail-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.modal-content {
-  background: white;
-  padding: 2rem;
-  border-radius: 0.5rem;
-  width: 400px;
-}
-.modal-content h3 {
-  margin-top: 0;
-}
-.modal-content form label {
-  display: block;
-  margin: 10px 0;
-}
-
-.modal-actions button {
-  margin-right: 0.5rem;
-  padding: 0.5rem 1rem;
-  border-radius: 0.375rem;
-  cursor: pointer;
-}
-.status-approved {
-  background-color: #d1fae5;
-  color: #065f46;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-}
-.status-pending {
-  background-color: #fef3c7;
-  color: #92400e;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-}
-
-.status-pending {
-  background-color: #fef3c7;
-  color: #92400e;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-}
-.status-waiting {
-  background-color: #fef3c7;
-  color: #060200;
-  padding: 0.25rem 0.5rem;
-  border-radius: 0.375rem;
-  font-size: 0.75rem;
-}
-</style>

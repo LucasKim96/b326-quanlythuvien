@@ -1,27 +1,7 @@
 <template>
   <div class="container">
     <!-- Navigation -->
-    <nav class="navbar">
-      <div class="nav-content">
-        <div class="nav-left">
-          <span class="nav-title">Library</span>
-        </div>
-        <div class="nav-links">
-          <RouterLink to="/user-home" class="nav-link">Trang chủ</RouterLink>
-          <RouterLink to="/don-muon-sach" class="nav-link"
-            >Đơn mượn sách</RouterLink
-          >
-          <a class="user-info" @click="toggleDropdown">
-            Xin chào, {{ authStore.user?.Ten }}
-            <div v-if="showDropdown" class="dropdown">
-              <button @click.prevent="goToUserInfo">Thông tin tài khoản</button>
-              <button @click="logout">Đăng xuất</button>
-            </div>
-          </a>
-        </div>
-      </div>
-    </nav>
-
+    <NavBarUser />
     <!-- Main Content -->
     <main class="main-content">
       <div class="account-card">
@@ -38,11 +18,7 @@
             </div>
             <div class="info-item">
               <label for="Ten">Tên:</label>
-              <input
-                id="Ten"
-                v-model="editForm.Ten"
-                :disabled="!isEditing"
-              />
+              <input id="Ten" v-model="editForm.Ten" :disabled="!isEditing" />
             </div>
             <div class="info-item">
               <label for="NgaySinh">Ngày sinh:</label>
@@ -55,11 +31,7 @@
             </div>
             <div class="info-item">
               <label for="Phai">Phái:</label>
-              <input
-                id="Phai"
-                v-model="editForm.Phai"
-                :disabled="!isEditing"
-              />
+              <input id="Phai" v-model="editForm.Phai" :disabled="!isEditing" />
             </div>
             <div class="info-item">
               <label for="DiaChi">Địa chỉ:</label>
@@ -79,7 +51,8 @@
             </div>
             <div class="info-item">
               <label for="Password">Đổi mật khẩu:</label>
-              <input type="password"
+              <input
+                type="password"
                 id="Password"
                 v-model="editForm.Password"
                 :disabled="!isEditing"
@@ -87,10 +60,7 @@
             </div>
           </div>
           <div class="action-buttons">
-            <button
-              v-if="!isEditing"
-              @click.prevent="enableEditing"
-            >
+            <button v-if="!isEditing" @click.prevent="enableEditing">
               Chỉnh sửa
             </button>
             <button v-else type="submit" class="action-buttons">Lưu</button>
@@ -111,19 +81,10 @@
 <script setup>
 import { ref } from "vue";
 import { useAuthStore } from "../stores/auth";
-import { useRouter } from "vue-router";
 import { updateDocGia } from "@/stores/docgia";
-
+import NavBarUser from "@//components/NavBarUser.vue";
 // Initializing the stores and router
 const authStore = useAuthStore();
-const router = useRouter();
-
-// Dropdown visibility state
-const showDropdown = ref(false);
-
-const goToUserInfo = () => {
-  router.push("/info-user");
-};
 
 const formatDate = (date) => {
   return date ? new Date(date).toISOString().split("T")[0] : "";
@@ -174,151 +135,4 @@ const handleSave = async () => {
     alert("Có lỗi xảy ra khi cập nhật thông tin.");
   }
 };
-
-// Function to toggle the dropdown menu
-const toggleDropdown = () => {
-  showDropdown.value = !showDropdown.value;
-};
-
-// Function to handle logout and redirect
-const logout = () => {
-  authStore.logout();
-  router.push("/");
-};
 </script>
-
-<style scoped>
-.container {
-  background-color: #f7fafc;
-  min-height: 100vh;
-}
-
-/* Navbar styling */
-.navbar {
-  background-color: #000000;
-  color: white;
-  padding: 1rem;
-}
-.nav-content {
-  display: flex;
-  justify-content: space-between;
-  max-width: 1024px;
-  margin: 0 auto;
-}
-.nav-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-.nav-links a {
-  color: white;
-  margin-left: 1rem;
-  text-decoration: none;
-  font-size: 0.875rem;
-}
-.nav-links a:hover {
-  background-color: #3869ca;
-  padding: 0.5rem;
-  border-radius: 0.375rem;
-}
-
-/* Dropdown menu */
-.user-info {
-  position: relative;
-  cursor: pointer;
-}
-.dropdown {
-  position: absolute;
-  right: 0;
-  top: 30px;
-  background-color: white;
-  color: black;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  width: 150px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  padding: 10px 0;
-}
-.dropdown button {
-  width: 100%;
-  background-color: transparent;
-  color: #333;
-  padding: 10px;
-  cursor: pointer;
-  border: none;
-}
-.dropdown button:hover {
-  background-color: #f0f0f0;
-}
-
-/* Main content */
-.main-content {
-  max-width: 600px;
-  margin: 2rem auto;
-  padding: 1rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Account card styling */
-.account-card {
-  background-color: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: 100%;
-}
-
-.section-title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 1.5rem;
-}
-
-.info-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.info-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.info-item label {
-  flex: 1;
-  font-weight: bold;
-  color: #1f2937;
-}
-
-.info-item input {
-  flex: 2;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-.action-buttons {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 1rem;
-}
-
-button {
-  background-color: #4f46e5;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #3730a3;
-}
-</style>

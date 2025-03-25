@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const auth = require("../middleware/auth");
 const NhanVien = require("../models/NhanVien");
+const DocGia = require("../models/DocGia");
 const { ROLES, ERROR, PASSWORD, SUCCESS } = require("../constants");
 
 // Liệt kê danh sách nhân viên
@@ -66,26 +67,48 @@ router.post("/add", auth([ROLES.ADMIN]), async (req, res) => {
 router.put("/edit/:id", auth([ROLES.ADMIN]), async (req, res) => {
   try {
     const { id } = req.params;
-    const { Password, ...otherFields } = req.body; // Tách riêng Password để xử lý riêng
+    const { Password, SoDienThoai, ...otherFields } = req.body;
 
-    let updatedFields = { ...otherFields };
+    if (SoDienThoai) {
+      const phoneExists = await Promise.all([
+        DocGia.findOne({ SoDienThoai }),
+        NhanVien.findOne({ SoDienThoai, _id: { $ne: id } }),
+      ]);
 
-    // Kiểm tra nếu Password được gửi và không rỗng
-    if (Password && Password.trim() !== "") {
-      const hashedPassword = await bcrypt.hash(Password, PASSWORD.SALT_ROUNDS);
-      updatedFields.Password = hashedPassword; // Gắn mật khẩu đã băm vào updatedFields
+      if (phoneExists[0] || phoneExists[1]) {
+        return res
+          .status(400)
+          .json({ message: "Số điện thoại đã tồn tại trong hệ thống" });
+      }
     }
+
+    let updatedFields = { ...otherFields, SoDienThoai };
+
+    // Nếu có mật khẩu mới thì mã hóa
+    if (Password !== undefined && Password.trim() !== "") {
+      updatedFields.Password = await bcrypt.hash(Password, 10);
+    } else if (Password === "" || Password === null) {
+      delete updatedFields.Password; // Nếu mật khẩu rỗng hoặc null thì không thay đổi
+    } else {
+      // Nếu không có mật khẩu mới, giữ nguyên mật khẩu cũ
+      const nhanVien = await NhanVien.findById(id);
+      if (nhanVien && nhanVien.Password) {
+        updatedFields.Password = nhanVien.Password;
+      }
+    }
+
     const NhanVienCapNhat = await NhanVien.findByIdAndUpdate(
       id,
       updatedFields,
       { new: true }
     );
     res.json({
-      message: SUCCESS.UPDATE_ACCOUNT_SUCCESS,
+      message: "Thông tin nhân viên đã được cập nhật",
       NhanVien: NhanVienCapNhat,
     });
   } catch (error) {
-    res.status(500).json({ message: ERROR.UPDATE_ACCOUNT_ERROR });
+    console.error("Lỗi khi cập nhật nhân viên:", error);
+    res.status(500).json({ message: "Lỗi khi cập nhật nhân viên" });
   }
 });
 

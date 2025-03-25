@@ -26,12 +26,9 @@ export const addDocGia = async (newDocGia) => {
 };
 
 // Hàm cập nhật thông tin độc giả
-export const updateDocGia = async (updatedDocGia) => {
+export const updateDocGia = async (id, formvalue) => {
   try {
-    await axios.put(
-      `http://localhost:5000/api/docgia/edit/${updatedDocGia._id}`,
-      updatedDocGia
-    );
+    await axios.put(`http://localhost:5000/api/docgia/edit/${id}`, formvalue);
     await fetchDocGias();
   } catch (error) {
     console.error("Error updating docgia:", error);

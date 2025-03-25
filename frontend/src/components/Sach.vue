@@ -2,8 +2,10 @@
 <template>
   <div class="table-container">
     <div class="header">
-      <h2 class="section-title">Quản lý sách</h2>
-      <button class="add-button" @click="openAddBookForm">Thêm sách</button>
+      <div class="header-left"><h2 class="section-title">Quản lý sách</h2></div>
+      <div class="header-right">
+        <button class="add-button" @click="openAddBookForm">Thêm sách</button>
+      </div>
     </div>
     <table class="table">
       <thead>

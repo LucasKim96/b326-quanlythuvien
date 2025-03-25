@@ -26,12 +26,9 @@ export const addnhanvien = async (newnhanvien) => {
 };
 
 // Hàm cập nhật thông tin nhân viên
-export const updatenhanvien = async (updatednhanvien) => {
+export const updatenhanvien = async (id, formvalue) => {
   try {
-    await axios.put(
-      `http://localhost:5000/api/nhanvien/edit/${updatednhanvien._id}`,
-      updatednhanvien
-    );
+    await axios.put(`http://localhost:5000/api/nhanvien/edit/${id}`, formvalue);
     await fetchnhanviens();
   } catch (error) {
     console.error("Error updating nhanvien:", error);
@@ -46,7 +43,7 @@ export const deletenhanvien = async (id) => {
     const authStore = useAuthStore(); // Lấy thông tin từ store auth
     const userCV = authStore.user.ChucVu; // Lấy user ID từ người dùng đã đăng nhập
 
-    if (userCV !== "Giám đốc") {
+    if (userCV !== "BOSS") {
       Error.value = "Không có thẩm quyền xóa!";
       alert(Error.value);
       return;

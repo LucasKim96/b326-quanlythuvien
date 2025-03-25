@@ -55,7 +55,9 @@
           required
         />
 
-        <button type="submit">{{ isLogin ? "Đăng Nhập" : "Đăng Ký" }}</button>
+        <button type="submit" class="form-actons">
+          {{ isLogin ? "Đăng Nhập" : "Đăng Ký" }}
+        </button>
       </form>
 
       <!-- Nút chuyển đổi giữa đăng nhập và đăng ký -->
@@ -140,45 +142,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.auth-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90vh;
-  background-color: #f5f5f5;
-}
-
-.auth-form {
-  width: 400px;
-  padding: 20px;
-  background: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  text-align: center;
-}
-
-input {
-  width: calc(100% - 20px);
-  padding: 10px;
-  margin-bottom: 10px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-}
-
-button {
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  cursor: pointer;
-}
-
-.switch-auth-mode {
-  background-color: transparent;
-  border: none;
-  color: #007bff;
-  cursor: pointer;
-  margin-top: 15px;
-}
-</style>

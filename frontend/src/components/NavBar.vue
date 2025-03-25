@@ -1,5 +1,4 @@
 <template>
-  <!-- Navigation -->
   <nav class="navbar navbar-expand-lg bg-primary px-3">
     <router-link class="navbar-brand" to="/admin-home"
       >Quản Lý Thư Viện</router-link

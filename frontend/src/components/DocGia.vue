@@ -52,41 +52,39 @@
     <div v-if="isEditModalOpen" class="edit-modal">
       <div class="modal-content">
         <h3>Chỉnh sửa thông tin Độc Giả</h3>
-        <form @submit.prevent="updateDocGiaData">
-          <div class="form-container">
-            <div class="form-group">
-              <label>Họ Lót:</label>
-              <input v-model="editDocGia.HoLot" type="text" required />
-            </div>
-            <div class="form-group">
-              <label>Tên:</label>
-              <input v-model="editDocGia.Ten" type="text" required />
-            </div>
-            <div class="form-group">
-              <label>Ngày Sinh:</label>
-              <input v-model="editDocGia.NgaySinh" type="date" required />
-            </div>
-            <div class="form-group">
-              <label>Phái:</label>
-              <select v-model="editDocGia.Phai" required>
-                <option value="Nam">Nam</option>
-                <option value="Nữ">Nữ</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Địa Chỉ:</label>
-              <input v-model="editDocGia.DiaChi" type="text" required />
-            </div>
-            <div class="form-group">
-              <label>Số Điện Thoại:</label>
-              <input v-model="editDocGia.SoDienThoai" type="text" required />
-            </div>
-            <div class="form-actions">
-              <button type="submit" class="btn-primary">Cập nhật</button>
-              <button @click.prevent="closeEditForm" class="btn-secondary">
-                Hủy
-              </button>
-            </div>
+        <form @submit.prevent="updateDocGiaData" class="form-container">
+          <div class="form-group">
+            <label>Họ Lót:</label>
+            <input v-model="editDocGia.HoLot" type="text" required />
+          </div>
+          <div class="form-group">
+            <label>Tên:</label>
+            <input v-model="editDocGia.Ten" type="text" required />
+          </div>
+          <div class="form-group">
+            <label>Ngày Sinh:</label>
+            <input v-model="editDocGia.NgaySinh" type="date" required />
+          </div>
+          <div class="form-group">
+            <label>Phái:</label>
+            <select v-model="editDocGia.Phai" required>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Địa Chỉ:</label>
+            <input v-model="editDocGia.DiaChi" type="text" required />
+          </div>
+          <div class="form-group">
+            <label>Số Điện Thoại:</label>
+            <input v-model="editDocGia.SoDienThoai" type="text" required />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Cập nhật</button>
+            <button @click.prevent="closeEditForm" class="btn-secondary">
+              Hủy
+            </button>
           </div>
         </form>
       </div>
@@ -211,6 +209,7 @@ const formatDate = (date) => {
 };
 
 const openEditForm = (docgia) => {
+  console.log("Dữ liệu docgia khi mở form:", docgia);
   editDocGia.value = { ...docgia, NgaySinh: formatDate(docgia.NgaySinh) }; // Clone data for editing
   isEditModalOpen.value = true;
 };
@@ -220,7 +219,12 @@ const closeEditForm = () => {
 };
 
 const updateDocGiaData = async () => {
-  await updateDocGia(editDocGia.value);
+  // eslint-disable-next-line no-unused-vars
+  const { Password, ...payload } = editDocGia.value; // Loại bỏ Password ngay từ đầu
+
+  console.log("Dữ liệu gửi lên backend:", payload);
+
+  await updateDocGia(editDocGia.value._id, payload);
   closeEditForm();
   fetchDocGias();
 };

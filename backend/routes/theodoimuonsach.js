@@ -181,41 +181,41 @@ router.put("/return/:id", auth([ROLES.ADMIN]), async (req, res) => {
   }
 });
 
-// Từ chối yêu cầu mượn sách (chỉ admin)
-router.put("/reject/:id", auth([ROLES.ADMIN]), async (req, res) => {
-  try {
-    const id = req.params.id;
+// // Từ chối yêu cầu mượn sách (chỉ admin)
+// router.put("/reject/:id", auth([ROLES.ADMIN]), async (req, res) => {
+//   try {
+//     const id = req.params.id;
 
-    // Lấy yêu cầu mượn sách hiện tại
-    const currentMuonSach = await TheoDoiMuonSach.findById(id);
+//     // Lấy yêu cầu mượn sách hiện tại
+//     const currentMuonSach = await TheoDoiMuonSach.findById(id);
 
-    // Kiểm tra xem yêu cầu mượn sách có tồn tại và trạng thái hiện tại có phải là "Chờ duyệt" hay không
-    if (!currentMuonSach) {
-      return res.status(404).json({ message: ERROR.LOAN_REQUEST_NOT_FOUND });
-    }
+//     // Kiểm tra xem yêu cầu mượn sách có tồn tại và trạng thái hiện tại có phải là "Chờ duyệt" hay không
+//     if (!currentMuonSach) {
+//       return res.status(404).json({ message: ERROR.LOAN_REQUEST_NOT_FOUND });
+//     }
 
-    if (currentMuonSach.TrangThai !== LOAN_STATUS.PENDING) {
-      return res.status(400).json({
-        message: `Chỉ có thể từ chối các yêu cầu mượn sách đang ở trạng thái ${LOAN_STATUS.PENDING}`,
-      });
-    }
+//     if (currentMuonSach.TrangThai !== LOAN_STATUS.PENDING) {
+//       return res.status(400).json({
+//         message: `Chỉ có thể từ chối các yêu cầu mượn sách đang ở trạng thái ${LOAN_STATUS.PENDING}`,
+//       });
+//     }
 
-    // Cập nhật trạng thái thành "Từ chối"
-    const updatedMuonSach = await TheoDoiMuonSach.findByIdAndUpdate(
-      id,
-      { TrangThai: LOAN_STATUS.REJECTED },
-      { new: true }
-    );
+//     // Cập nhật trạng thái thành "Từ chối"
+//     const updatedMuonSach = await TheoDoiMuonSach.findByIdAndUpdate(
+//       id,
+//       { TrangThai: LOAN_STATUS.REJECTED },
+//       { new: true }
+//     );
 
-    res.json({
-      message: "Yêu cầu mượn sách đã bị từ chối",
-      muonSach: updatedMuonSach,
-    });
-  } catch (error) {
-    console.error("Error rejecting loan request:", error);
-    res.status(500).json({ message: "Lỗi khi từ chối yêu cầu mượn sách" });
-  }
-});
+//     res.json({
+//       message: "Yêu cầu mượn sách đã bị từ chối",
+//       muonSach: updatedMuonSach,
+//     });
+//   } catch (error) {
+//     console.error("Error rejecting loan request:", error);
+//     res.status(500).json({ message: "Lỗi khi từ chối yêu cầu mượn sách" });
+//   }
+// });
 
 // Sửa thông tin bản ghi mượn sách (chỉ admin)
 router.put("/edit/:id", auth([ROLES.ADMIN]), async (req, res) => {

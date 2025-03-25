@@ -42,16 +42,26 @@
       <div class="modal-content">
         <h3>Chỉnh sửa thông tin Nhà Xuất Bản</h3>
         <form @submit.prevent="updateNxbData">
-          <label>
-            Tên Nhà Xuất Bản:
-            <input v-model="editNxb.TenNXB" type="text" required />
-          </label>
-          <label>
-            Địa Chỉ:
-            <input v-model="editNxb.DiaChi" type="text" />
-          </label>
-          <button type="submit">Cập nhật</button>
-          <button @click.prevent="closeEditForm">Hủy</button>
+          <div class="form-container">
+            <div class="form-group">
+              <label>
+                Tên Nhà Xuất Bản:
+                <input v-model="editNxb.TenNXB" type="text" required />
+              </label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>
+              Địa Chỉ:
+              <input v-model="editNxb.DiaChi" type="text" />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Cập nhật</button>
+            <button @click.prevent="closeEditForm" class="btn-secondary">
+              >Hủy
+            </button>
+          </div>
         </form>
       </div>
     </div>
