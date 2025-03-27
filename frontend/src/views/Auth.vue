@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="auth-wrapper">
-    <h1 style="padding: 40px">LIBRARY VIETNAM</h1>
+    <h1 style="padding: 40px">DREAM LIBBARY</h1>
     <div class="auth-form">
       <h2>{{ isLogin ? "Đăng Nhập" : "Đăng Ký" }}</h2>
 
