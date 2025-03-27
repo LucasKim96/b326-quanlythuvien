@@ -26,12 +26,18 @@
           <td>{{ nxb.TenNXB }}</td>
           <td>{{ nxb.DiaChi }}</td>
           <td>
-            <a href="#" @click.prevent="openEditForm(nxb)" class="edit-link"
-              >Edit</a
-            >
-            <a href="#" class="delete-link" @click.prevent="deleteNxbData(nxb)"
-              >Delete</a
-            >
+            <font-awesome-icon
+              icon="fa-edit"
+              @click.prevent="openEditForm(nxb)"
+              class="edit-icon"
+              style="cursor: pointer; margin-right: 10px"
+            />
+            <font-awesome-icon
+              icon="fa-trash-alt"
+              @click.prevent="deleteNxbData(nxb._id)"
+              class="delete-icon"
+              style="cursor: pointer; color: red"
+            />
           </td>
         </tr>
       </tbody>
@@ -44,22 +50,18 @@
         <form @submit.prevent="updateNxbData">
           <div class="form-container">
             <div class="form-group">
-              <label>
-                Tên Nhà Xuất Bản:
-                <input v-model="editNxb.TenNXB" type="text" required />
-              </label>
+              <label> Tên Nhà Xuất Bản: </label
+              ><input v-model="editNxb.TenNXB" type="text" required />
             </div>
           </div>
           <div class="form-group">
-            <label>
-              Địa Chỉ:
-              <input v-model="editNxb.DiaChi" type="text" />
-            </label>
+            <label> Địa Chỉ: </label
+            ><input v-model="editNxb.DiaChi" type="text" />
           </div>
           <div class="form-actions">
             <button type="submit" class="btn-primary">Cập nhật</button>
             <button @click.prevent="closeEditForm" class="btn-secondary">
-              >Hủy
+              Hủy
             </button>
           </div>
         </form>
@@ -96,6 +98,11 @@ import {
   addNxb,
   deleteNxb,
 } from "../stores/nhaxuatban.js";
+
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+library.add(faEdit, faTrashAlt);
 
 const isEditModalOpen = ref(false);
 const editNxb = ref({});

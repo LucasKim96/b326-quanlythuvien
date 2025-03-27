@@ -18,21 +18,24 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="book in books" :key="book.id">
+        <tr v-for="book in books" :key="book._id">
           <td>{{ book.TenSach }}</td>
           <td>{{ book.TacGia }}</td>
           <td>{{ book.DonGia }}</td>
           <td>{{ book.SoQuyen }}</td>
           <td>
-            <a href="#" @click.prevent="openEditForm(book)" class="edit-link"
-              >Edit</a
-            >
-            <a
-              href="#"
-              class="delete-link"
-              @click.prevent="deleteBookData(book)"
-              >Delete</a
-            >
+            <font-awesome-icon
+              icon="fa-edit"
+              @click.prevent="openEditForm(book)"
+              class="edit-icon"
+              style="cursor: pointer; margin-right: 10px"
+            />
+            <font-awesome-icon
+              icon="fa-trash-alt"
+              @click.prevent="deleteBookData(book._id)"
+              class="delete-icon"
+              style="cursor: pointer; color: red"
+            />
           </td>
         </tr>
       </tbody>
@@ -118,6 +121,11 @@ import {
 } from "../stores/sach.js";
 import { nxbs, fetchNxbs } from "../stores/nhaxuatban.js";
 import { ref, onMounted } from "vue";
+
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+library.add(faEdit, faTrashAlt);
 
 const isEditModalOpen = ref(false);
 const editBook = ref({});

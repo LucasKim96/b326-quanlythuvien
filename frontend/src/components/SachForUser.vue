@@ -24,8 +24,8 @@
               href="#"
               @click.prevent="openAddRequestForm(book)"
               class="edit-link"
-              >Đăng ký</a
-            >
+              ><i class="fas fa-sign-in-alt"></i
+            ></a>
           </td>
         </tr>
       </tbody>
@@ -37,32 +37,26 @@
         <h3>Thêm đơn mượn sách mới</h3>
         <form @submit.prevent="addRequestData" class="form-container">
           <div class="form-group">
-            <label>
-              Tên Sách:
-              <input type="text" v-model="newRequest.TenSach" disabled />
-            </label>
+            <label> Tên Sách: </label
+            ><input type="text" v-model="newRequest.TenSach" disabled />
           </div>
           <div class="form-group">
-            <label>
-              Tên Độc Giả:
-              <input type="text" v-model="newRequest.TenDocGia" disabled />
-            </label>
+            <label> Tên Độc Giả: </label
+            ><input type="text" v-model="newRequest.TenDocGia" disabled />
           </div>
           <div class="form-group">
-            <label>
-              Ngày Mượn:
-              <input v-model="newRequest.NgayMuon" type="date" required />
-            </label>
+            <label> Ngày Mượn: </label
+            ><input v-model="newRequest.NgayMuon" type="date" required />
           </div>
           <div class="form-group">
-            <label>
-              Ngày Trả:
-              <input v-model="newRequest.NgayTra" type="date" required />
-            </label>
+            <label> Ngày Trả: </label
+            ><input v-model="newRequest.NgayTra" type="date" required />
           </div>
           <div class="form-actions">
-            <button type="submit">Thêm đơn mượn</button>
-            <button @click.prevent="closeAddRequestForm">Hủy</button>
+            <button type="submit" class="btn-primary">Thêm đơn mượn</button>
+            <button @click.prevent="closeAddRequestForm" class="btn-secondary">
+              Hủy
+            </button>
           </div>
         </form>
       </div>
@@ -75,6 +69,9 @@ import { books, fetchBooks } from "../stores/sach.js";
 import { ref, onMounted } from "vue";
 import { addRequest } from "../stores/theodoimuonsach";
 import { useAuthStore } from "../stores/auth"; // Import auth store để lấy thông tin người dùng
+import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+library.add(faEdit, faTrashAlt);
 
 const authStore = useAuthStore(); // Sử dụng store để lấy thông tin đăng nhập người dùng
 const isAddRequestModalOpen = ref(false);

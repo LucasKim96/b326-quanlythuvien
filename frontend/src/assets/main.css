@@ -1,12 +1,5 @@
 @import "primeicons/primeicons.css";
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  font-weight: normal;
-}
-
 a,
 .green {
   text-decoration: none;
@@ -23,7 +16,7 @@ a,
 
 @media (min-width: 1024px) {
   body {
-    display: flex;
+    /* display: flex; */
     place-items: center;
   }
 }
@@ -180,7 +173,7 @@ a,
 }
 
 .container {
-  background-color: #f5f7fa;
+  background-color: #dbe3f0;
   min-height: 100vh;
 }
 
@@ -376,6 +369,10 @@ h3 {
   border-radius: 5px;
 }
 
+.form-group select {
+  margin-bottom: 10px;
+}
+
 /* Hành động form */
 .form-actions {
   display: flex;
@@ -517,4 +514,36 @@ button {
   outline: none;
   border-color: #4f46e5;
   box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.4);
+}
+
+.account-card {
+  max-width: 600px; /* Điều chỉnh giá trị này theo kích thước bạn muốn */
+  margin: 0 auto; /* Căn giữa theo chiều ngang */
+  padding: 20px; /* Thêm padding bên trong card */
+  border: 1px solid #ccc; /* Ví dụ: thêm border để dễ nhìn */
+  border-radius: 8px; /* Ví dụ: bo tròn góc */
+  background-color: #f9f9f9; /* Ví dụ: màu nền nhạt */
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(300px, 1fr)
+  ); /* Tạo grid linh hoạt */
+  gap: 15px;
+}
+
+.info-item label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.info-item input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước input */
 }

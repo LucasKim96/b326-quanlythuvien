@@ -26,9 +26,12 @@ export const addnhanvien = async (newnhanvien) => {
 };
 
 // Hàm cập nhật thông tin nhân viên
-export const updatenhanvien = async (id, formvalue) => {
+export const updatenhanvien = async (user, formvalue) => {
   try {
-    await axios.put(`http://localhost:5000/api/nhanvien/edit/${id}`, formvalue);
+    await axios.put(
+      `http://localhost:5000/api/nhanvien/edit/${user._id}`,
+      formvalue
+    );
     await fetchnhanviens();
   } catch (error) {
     console.error("Error updating nhanvien:", error);

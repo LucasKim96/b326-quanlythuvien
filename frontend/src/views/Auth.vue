@@ -6,8 +6,7 @@
       <h2>{{ isLogin ? "Đăng Nhập" : "Đăng Ký" }}</h2>
 
       <!-- Form đăng ký / đăng nhập -->
-      <form @submit.prevent="handleSubmit">
-        <!-- Chỉ hiển thị các trường đăng ký khi ở chế độ đăng ký -->
+      <form @submit.prevent="handleSubmit" class="form-container">
         <div v-if="!isLogin">
           <input v-model="registerForm.HoLot" placeholder="Họ Lót" required />
           <input v-model="registerForm.Ten" placeholder="Tên" required />
@@ -17,15 +16,17 @@
             placeholder="Ngày Sinh"
             required
           />
-          <input
-            v-model="registerForm.Phai"
-            placeholder="Phái (Nam/Nữ)"
-            required
-          />
+          <div class="form-group">
+            <select v-model="registerForm.Phai" required>
+              <option value="" disabled selected>Chọn Phái</option>
+              <option value="Nam">Nam</option>
+              <option value="Nữ">Nữ</option>
+            </select>
+          </div>
+
           <input v-model="registerForm.DiaChi" placeholder="Địa chỉ" required />
         </div>
 
-        <!-- Trường nhập số điện thoại (riêng biệt cho đăng nhập và đăng ký) -->
         <input
           v-if="isLogin"
           v-model="loginForm.SoDienThoai"
@@ -39,7 +40,6 @@
           required
         />
 
-        <!-- Trường nhập mật khẩu (riêng biệt cho đăng nhập và đăng ký) -->
         <input
           v-if="isLogin"
           v-model="loginForm.Password"
@@ -55,7 +55,7 @@
           required
         />
 
-        <button type="submit" class="form-actons">
+        <button type="submit" class="btn-primary">
           {{ isLogin ? "Đăng Nhập" : "Đăng Ký" }}
         </button>
       </form>

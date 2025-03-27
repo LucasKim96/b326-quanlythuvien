@@ -110,9 +110,18 @@ router.put("/edit/:id", auth(), async (req, res) => {
 router.delete("/delete/:id", auth([ROLES.ADMIN]), async (req, res) => {
   try {
     const { id } = req.params;
+    // Kiểm tra xem độc giả có trong theo dõi mượn sách không
+    const isReaderInBorrowingLog = await TheoDoiMuonSach.exists({ docGia: id });
+    if (isReaderInBorrowingLog) {
+      return res.status(400).json({
+        message: "Không thể xóa độc giả vì vẫn còn sách đang mượn.",
+      });
+    }
+    // Nếu không có trong theo dõi mượn sách thì tiến hành xóa
     await DocGia.findByIdAndDelete(id);
     res.json({ message: SUCCESS.DELETE_ACCOUNT_SUCCESS });
   } catch (error) {
+    console.error("Lỗi khi xóa độc giả:", error);
     res.status(500).json({ message: ERROR.DELETE_ACCOUNT_ERROR });
   }
 });

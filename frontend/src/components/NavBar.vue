@@ -70,9 +70,9 @@
       </ul>
       <!-- Dropdown User -->
       <div class="user-info position-relative">
-        <span @click="toggleDropdown"
-          >Xin chào, {{ authStore.user?.HoTenNV }}</span
-        >
+        <span @click="toggleDropdown" class="nav-link">
+          Xin chào, {{ authStore.user?.HoTenNV }}
+        </span>
         <div v-if="showDropdown" class="dropdown-menu show">
           <button class="dropdown-item" @click.prevent="goToAdminInfo">
             <i class="fas fa-user-circle"></i> Thông tin tài khoản
@@ -110,7 +110,7 @@ const toggleDropdown = () => {
 };
 
 const handleClickOutside = (event) => {
-  if (!event.target.closest(".user-info")) {
+  if (showDropdown.value && !event.target.closest(".user-info")) {
     showDropdown.value = false;
   }
 };
