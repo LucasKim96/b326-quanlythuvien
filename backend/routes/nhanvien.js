@@ -32,7 +32,7 @@ router.get("/timkiem/ten", auth([ROLES.ADMIN]), async (req, res) => {
 router.get("/timkiem/sodienthoai", auth([ROLES.ADMIN]), async (req, res) => {
   try {
     const { DienThoai } = req.query;
-    const ketQua = await NhanVien.find({ DienThoai });
+    const ketQua = await NhanVien.findOne({ DienThoai });
     res.json(ketQua);
   } catch (error) {
     res.status(500).json({ message: ERROR.FIND_BY_PHONE });

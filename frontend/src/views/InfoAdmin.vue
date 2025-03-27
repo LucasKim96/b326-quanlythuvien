@@ -50,7 +50,7 @@
               />
             </div>
           </div>
-          <div class="action-buttons">
+          <div class="form-actions">
             <button
               v-if="!isEditing"
               @click.prevent="enableEditing"
@@ -58,13 +58,11 @@
             >
               Chỉnh sửa
             </button>
-            <button v-else type="submit" class="action-buttons btn-primary">
-              Lưu
-            </button>
+            <button v-else type="submit" class="btn-primary">Lưu</button>
             <button
               v-if="isEditing"
               @click.prevent="cancelEditing"
-              class="action-buttons btn-secondary"
+              class="btn-secondary"
             >
               Hủy
             </button>

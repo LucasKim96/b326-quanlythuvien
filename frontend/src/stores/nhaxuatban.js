@@ -13,18 +13,19 @@ export const fetchNxbs = async () => {
   } catch (error) {
     console.error("Lỗi khi lấy danh sách Nhà Xuất Bản:", error);
     alert(error.response.data.message);
-
   }
 };
 
 // Hàm cập nhật thông tin Nhà Xuất Bản
 export const updateNxb = async (updatedNxb) => {
   try {
-    await axios.put(`http://localhost:5000/api/nhaxuatban/edit/${updatedNxb._id}`, updatedNxb); // Đường dẫn API cập nhật nhà xuất bản
+    await axios.put(
+      `http://localhost:5000/api/nhaxuatban/edit/${updatedNxb._id}`,
+      updatedNxb
+    ); // Đường dẫn API cập nhật nhà xuất bản
   } catch (error) {
     console.error("Lỗi khi cập nhật Nhà Xuất Bản:", error);
     alert(error.response.data.message);
-
   }
 };
 
@@ -35,16 +36,18 @@ export const addNxb = async (newNxb) => {
   } catch (error) {
     console.error("Lỗi khi thêm Nhà Xuất Bản:", error);
     alert(error.response.data.message);
-
   }
 };
 
+// Hàm xóa Nhà Xuất Bản
 export const deleteNxb = async (delNxb) => {
-    try {
-      await axios.delete(`http://localhost:5000/api/nhaxuatban/delete/${delNxb._id}`, delNxb); // Đường dẫn API thêm nhà xuất bản
-    } catch (error) {
-      console.error("Lỗi khi xóa Nhà Xuất Bản:", error);
-      alert(error.response.data.message);
-
-    }
-  };
+  try {
+    await axios.delete(
+      `http://localhost:5000/api/nhaxuatban/delete/${delNxb._id}`,
+      delNxb
+    ); // Đường dẫn API thêm nhà xuất bản
+  } catch (error) {
+    console.error("Lỗi khi xóa Nhà Xuất Bản:", error);
+    alert(error.response.data.message);
+  }
+};

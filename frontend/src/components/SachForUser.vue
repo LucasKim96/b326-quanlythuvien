@@ -45,6 +45,10 @@
             ><input type="text" v-model="newRequest.TenDocGia" disabled />
           </div>
           <div class="form-group">
+            <label> SĐT Độc Giả: </label
+            ><input type="text" v-model="newRequest.SoDienThoai" disabled />
+          </div>
+          <div class="form-group">
             <label> Ngày Mượn: </label
             ><input v-model="newRequest.NgayMuon" type="date" required />
           </div>
@@ -78,6 +82,7 @@ const isAddRequestModalOpen = ref(false);
 const newRequest = ref({
   TenSach: "",
   TenDocGia: authStore.user?.Ten, // Tên độc giả lấy từ thông tin đăng nhập
+  SoDienThoai: authStore.user?.SoDienThoai,
   NgayMuon: "",
   NgayTra: "",
 });
@@ -86,6 +91,7 @@ const newRequest = ref({
 const openAddRequestForm = (book) => {
   newRequest.value.TenSach = book.TenSach; // Điền tên sách từ book vào form
   newRequest.value.TenDocGia = authStore.user?.Ten || ""; // Lấy tên người dùng từ auth store
+  newRequest.value.SoDienThoai = authStore.user?.SoDienThoai || "";
   isAddRequestModalOpen.value = true;
 };
 
@@ -95,6 +101,7 @@ const closeAddRequestForm = () => {
   newRequest.value = {
     TenSach: "",
     TenDocGia: authStore.user?.Ten || "", // Reset lại tên độc giả
+    SoDienThoai: authStore.user?.SoDienThoai || "",
     NgayMuon: "",
     NgayTra: "",
   };

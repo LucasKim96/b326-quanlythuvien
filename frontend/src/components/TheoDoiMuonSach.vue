@@ -128,7 +128,7 @@
           </div>
           <div class="form-group">
             <label> SĐT Độc Giả: </label
-            ><input type="text" v-model="newRequest.SDTDocGia" />
+            ><input type="text" v-model="newRequest.SoDienThoai" />
           </div>
           <div class="form-group">
             <label> Ngày Mượn: </label
@@ -205,7 +205,7 @@ const deleteRecorddata = async (id) => {
 const isAddRequestModalOpen = ref(false);
 const newRequest = ref({
   TenSach: "",
-  SDTDocGia: "",
+  SoDienThoai: "",
   NgayMuon: "",
   NgayTra: "",
 });
@@ -220,7 +220,7 @@ const closeAddRequestForm = () => {
   isAddRequestModalOpen.value = false;
   newRequest.value = {
     TenSach: "",
-    SDTDocGia: "",
+    SoDienThoai: "",
     NgayMuon: "",
     NgayTra: "",
   };

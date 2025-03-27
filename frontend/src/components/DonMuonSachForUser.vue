@@ -39,45 +39,44 @@
         </tr>
       </tbody>
     </table>
-    <div v-if="isDetailModalOpen" class="detail-modal">
+    <div v-if="isDetailModalOpen" class="add-modal">
       <div class="modal-content">
         <h3>Chi tiết đơn mượn sách</h3>
-        <form>
-          <label>
-            Mã Sách:
-            <span>{{ detailRecord.MaSach._id }}</span>
-          </label>
-          <label>
-            Tên Sách:
-            <span>{{ detailRecord.MaSach.TenSach }}</span>
-          </label>
-          <label>
-            Mã Độc Giả:
-            <span>{{ detailRecord.MaDocGia._id }}</span>
-          </label>
-          <label>
-            Tên Độc Giả:
-            <span>{{ detailRecord.MaDocGia.Ten }}</span>
-          </label>
-          <label>
-            Số Điện Thoại Độc Giả:
-            <span>{{ detailRecord.MaDocGia.SoDienThoai }}</span>
-          </label>
-          <label>
-            Ngày Mượn:
-            <span>{{ formatDate(detailRecord.NgayMuon) }}</span>
-          </label>
-          <label>
-            Ngày Trả:
-            <span>{{ formatDate(detailRecord.NgayTra) }}</span>
-          </label>
-          <label>
-            Trạng Thái:
-            <span>{{ detailRecord.TrangThai }}</span>
-          </label>
-
+        <form class="form-container">
+          <div class="form-group">
+            <label>Mã Sách:</label><span>{{ detailRecord.MaSach._id }}</span>
+          </div>
+          <div class="form-group">
+            <label>Tên Sách:</label
+            ><span>{{ detailRecord.MaSach.TenSach }}</span>
+          </div>
+          <div class="form-group">
+            <label>Mã Độc Giả:</label
+            ><span>{{ detailRecord.MaDocGia._id }}</span>
+          </div>
+          <div class="form-group">
+            <label>Tên Độc Giả:</label
+            ><span>{{ detailRecord.MaDocGia.Ten }}</span>
+          </div>
+          <div class="form-group">
+            <label>SĐT Độc Giả:</label
+            ><span>{{ detailRecord.MaDocGia.SoDienThoai }}</span>
+          </div>
+          <div class="form-group">
+            <label>Ngày Mượn:</label
+            ><span>{{ formatDate(detailRecord.NgayMuon) }}</span>
+          </div>
+          <div class="form-group">
+            <label>Ngày Trả:</label
+            ><span>{{ formatDate(detailRecord.NgayTra) }}</span>
+          </div>
+          <div class="form-group">
+            <label>Trạng Thái:</label><span>{{ detailRecord.TrangThai }}</span>
+          </div>
           <div class="modal-actions">
-            <button @click="closeDetailModal">Đóng</button>
+            <button @click="closeDetailModal" class="btn-secondary">
+              Đóng
+            </button>
           </div>
         </form>
       </div>

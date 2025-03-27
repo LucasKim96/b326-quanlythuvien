@@ -2,7 +2,7 @@
   <div class="container">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-primary px-3">
-      <RouterLink class="navbar-brand" to="/user-home">Thư Viện</RouterLink>
+      <RouterLink class="navbar-brand" to="/user-home">THƯ VIỆN</RouterLink>
       <button
         class="navbar-toggler"
         type="button"

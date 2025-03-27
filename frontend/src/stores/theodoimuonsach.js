@@ -47,6 +47,7 @@ export const deleteRecord = async (id) => {
 
 // Hàm thêm yêu cầu mượn sách
 export const addRequest = async (newRequest) => {
+  let docgiaId = null; // Khai báo docgiaId ở phạm vi rộng hơn
   try {
     // Tìm mã sách từ tên sách
     const book = await axios.get(
@@ -58,15 +59,31 @@ export const addRequest = async (newRequest) => {
       return;
     }
 
-    // Tìm mã độc giả từ sdt độc giả
-    const docgia = await axios.get(
-      `http://localhost:5000/api/docgia/timkiem/sodienthoai?DienThoai=${newRequest.SDTDocGia}`
+    // Ưu tiên tìm kiếm độc giả bằng số điện thoại
+    const docgiasdt = await axios.get(
+      `http://localhost:5000/api/docgia/timkiem/sdt?SoDienThoai=${newRequest.SoDienThoai}`
     );
-    if (!docgia.data || !docgia.data._id) {
-      alert("Không tìm thấy độc giả với số điện thoại đã nhập");
+
+    if (docgiasdt.data && docgiasdt.data._id) {
+      docgiaId = docgiasdt.data._id;
+      console.log("Tìm thấy độc giả theo số điện thoại:", docgiasdt.data);
+    } else {
+      // Nếu không tìm thấy bằng số điện thoại, tìm kiếm bằng tên
+      const docgia = await axios.get(
+        `http://localhost:5000/api/docgia/timkiem/ten?Ten=${newRequest.TenDocGia}`
+      );
+      console.log("Tìm thấy độc giả theo tên:", docgia.data);
+
+      if (docgia.data && docgia.data.length > 0) {
+        docgiaId = docgia.data[0]?._id; // Lấy ID từ kết quả tìm kiếm theo tên (mảng)
+      }
+    }
+
+    // Kiểm tra xem đã tìm thấy độc giả hay chưa
+    if (!docgiaId) {
+      alert("Không tìm thấy độc giả với tên hoặc số điện thoại đã nhập");
       return;
     }
-    const docgiaId = docgia.data?._id;
 
     // Cập nhật mã sách và mã độc giả vào yêu cầu mới
     const requestData = {
@@ -92,7 +109,7 @@ export const addRequest = async (newRequest) => {
 export const updateRequest = async (id, requestData) => {
   try {
     await axios.put(`${apiBase}/edit/${id}`, requestData);
-    alert("Thông tin đơn mượn sách đã được cập nhật thành công");
+    console.log("Thông tin đơn mượn sách đã được cập nhật thành công");
   } catch (error) {
     console.error("Error updating request:", error);
     alert(error.response.data.message);

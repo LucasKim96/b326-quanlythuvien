@@ -333,7 +333,7 @@ a,
   background: white;
   padding: 2rem;
   border-radius: 8px;
-  width: fit-content;
+  width: auto;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   white-space: nowrap;
 }
@@ -355,7 +355,7 @@ h3 {
 }
 
 .form-group label {
-  width: 120px;
+  width: 140px;
   font-weight: bold;
   text-align: right;
   margin-right: 10px;
@@ -378,7 +378,7 @@ h3 {
   display: flex;
   justify-content: space-between; /* Sử dụng space-between */
   margin-top: 15px;
-  gap: 10px; /* Thêm gap để tạo khoảng cách giữa các nút */
+  gap: 7px;
 }
 
 .btn-primary {
@@ -389,7 +389,7 @@ h3 {
   border-radius: 5px;
   cursor: pointer;
   flex: 1;
-  margin-right: 10px; /* Loại bỏ margin-right ở đây vì đã có gap ở .form-actions */
+  margin-right: 10px;
 }
 
 .btn-primary:hover {
@@ -517,20 +517,17 @@ button {
 }
 
 .account-card {
-  max-width: 600px; /* Điều chỉnh giá trị này theo kích thước bạn muốn */
-  margin: 0 auto; /* Căn giữa theo chiều ngang */
-  padding: 20px; /* Thêm padding bên trong card */
-  border: 1px solid #ccc; /* Ví dụ: thêm border để dễ nhìn */
-  border-radius: 8px; /* Ví dụ: bo tròn góc */
-  background-color: #f9f9f9; /* Ví dụ: màu nền nhạt */
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
 }
 
 .info-grid {
   display: grid;
-  grid-template-columns: repeat(
-    auto-fit,
-    minmax(300px, 1fr)
-  ); /* Tạo grid linh hoạt */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 15px;
 }
 
@@ -545,5 +542,5 @@ button {
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-sizing: border-box; /* Đảm bảo padding và border không làm tăng kích thước input */
+  box-sizing: border-box;
 }

@@ -195,7 +195,7 @@ const updatenhanvienData = async () => {
   const { Password, ...payload } = editnhanvien.value;
   console.log("Dữ liệu gửi lên backend:", payload);
 
-  await updatenhanvien(editnhanvien.value._id, payload);
+  await updatenhanvien(editnhanvien.value, payload);
   closeEditForm();
   fetchnhanviens();
 };

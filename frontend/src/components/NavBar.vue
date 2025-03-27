@@ -1,7 +1,10 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-primary px-3">
-    <router-link class="navbar-brand" to="/admin-home"
-      >Quản Lý Thư Viện</router-link
+    <router-link
+      class="btn btn-lg btn-warning"
+      to="/admin-home"
+      style="color: #000; background-color: rbg(255 140 0)"
+      ><strong>QUẢN LÝ THƯ&nbsp;VIỆN</strong></router-link
     >
     <button
       class="navbar-toggler"

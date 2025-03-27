@@ -2,7 +2,7 @@
   <div class="container">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-primary px-3">
-      <RouterLink class="navbar-brand" to="/user-home">Thư Viện</RouterLink>
+      <RouterLink class="navbar-brand" to="/user-home">THƯ VIỆN</RouterLink>
       <button
         class="navbar-toggler"
         type="button"
@@ -105,7 +105,7 @@
               />
             </div>
           </div>
-          <div class="action-buttons">
+          <div class="form-actions">
             <button
               v-if="!isEditing"
               @click.prevent="enableEditing"
@@ -113,13 +113,11 @@
             >
               Chỉnh sửa
             </button>
-            <button v-else type="submit" class="action-buttons btn-primary">
-              Lưu
-            </button>
+            <button v-else type="submit" class="btn-primary">Lưu</button>
             <button
               v-if="isEditing"
               @click.prevent="cancelEditing"
-              class="action-buttons btn-secondary"
+              class="btn-secondary"
             >
               Hủy
             </button>

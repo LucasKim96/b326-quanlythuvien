@@ -5,15 +5,31 @@ const auth = require("../middleware/auth");
 const Sach = require("../models/Sach");
 const NhaXuatBan = require("../models/NhaXuatBan");
 const TheoDoiMuonSach = require("../models/TheoDoiMuonSach");
-const { ERROR, ROLES, SUCCESS } = require("../constants");
+const { ERROR, ROLES, SUCCESS, LOAN_STATUS } = require("../constants");
 
-// Liệt kê tất cả các sách
+// Lấy tổng số quyển sách (bao gồm đang có và đang mượn) cho từng tựa sách
 router.get("/", auth([]), async (req, res) => {
   try {
-    const danhSachSach = await Sach.find();
-    res.json(danhSachSach);
+    const allBooks = await Sach.find();
+    const borrowedBooks = await TheoDoiMuonSach.find({
+      TrangThai: LOAN_STATUS.BORROWED,
+    }); // Lấy sách đang mượn
+
+    const booksWithTotal = allBooks.map((book) => {
+      const borrowedCount = borrowedBooks.filter(
+        (borrow) =>
+          borrow.MaSach && borrow.MaSach.toString() === book._id.toString()
+      ).length;
+      const sum = book.SoQuyen + borrowedCount;
+      return {
+        ...book.toObject(), // Convert Mongoose document to plain object
+        tongso: sum,
+      };
+    });
+    res.json(booksWithTotal); // Trả về mảng các sách với tổng số lượng
   } catch (error) {
-    res.status(500).json({ message: ERROR.FETCH_BOOK_LIST });
+    console.error("Lỗi khi lấy tổng số sách:", error);
+    res.status(500).json({ message: ERROR.GET_TOTAL_BOOKS_ERROR });
   }
 });
 
@@ -43,28 +59,10 @@ router.get("/timkiem/tacgia", auth([]), async (req, res) => {
   }
 });
 
-// Tìm kiếm sách theo nhà xuất bản
-router.get("/timkiem/nxb", auth([]), async (req, res) => {
-  try {
-    const { MaNXB } = req.query;
-    const ketQua = await Sach.find({ MaNXB });
-    res.json(ketQua);
-  } catch (error) {
-    res.status(500).json({ message: ERROR.FIND_BOOK_BY_PUBLISHER });
-  }
-});
-
 // Thêm sách mới
 router.post("/add", auth([ROLES.ADMIN]), async (req, res) => {
   try {
-    const { TenSach, DonGia, SoQuyen, NamXuatBan, TenNXB, TacGia } = req.body;
-
-    // Tìm mã nhà xuất bản từ tên nhà xuất bản
-    const nhaXuatBan = await NhaXuatBan.findOne({ TenNXB });
-
-    if (!nhaXuatBan) {
-      return res.status(404).json({ message: ERROR.PUBLISHER_NOT_FOUND });
-    }
+    const { TenSach, DonGia, SoQuyen, NamXuatBan, MaNXB, TacGia } = req.body;
 
     // Tạo sách mới với mã nhà xuất bản
     const sachMoi = new Sach({
@@ -72,7 +70,7 @@ router.post("/add", auth([ROLES.ADMIN]), async (req, res) => {
       DonGia,
       SoQuyen,
       NamXuatBan,
-      MaNXB: nhaXuatBan._id, // Sử dụng _id của nhà xuất bản tìm được
+      MaNXB,
       TacGia,
     });
 
@@ -125,7 +123,7 @@ router.delete("/delete/:id", auth([ROLES.ADMIN]), async (req, res) => {
     const { id } = req.params;
 
     // Kiểm tra xem sách có đang được mượn không
-    const isBookBorrowed = await TheoDoiMuonSach.find({ id });
+    const isBookBorrowed = await TheoDoiMuonSach.findOne({ id });
     if (isBookBorrowed) {
       return res.status(400).json({
         message: ERROR.CANNOT_DELETE_BOOK,

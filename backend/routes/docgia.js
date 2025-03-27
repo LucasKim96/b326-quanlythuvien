@@ -5,7 +5,14 @@ const bcrypt = require("bcryptjs");
 const auth = require("../middleware/auth");
 const DocGia = require("../models/DocGia");
 const NhanVien = require("../models/NhanVien");
-const { ROLES, SUCCESS, ERROR, PASSWORD } = require("../constants");
+const TheoDoiMuonSach = require("../models/TheoDoiMuonSach");
+const {
+  ROLES,
+  SUCCESS,
+  ERROR,
+  PASSWORD,
+  LOAN_STATUS,
+} = require("../constants");
 
 // Liệt kê danh sách độc giả
 router.get("/", auth([]), async (req, res) => {
@@ -21,7 +28,7 @@ router.get("/", auth([]), async (req, res) => {
 router.get("/timkiem/ten", auth([]), async (req, res) => {
   try {
     const { Ten } = req.query;
-    const ketQua = await DocGia.find({ Ten: Ten });
+    const ketQua = await DocGia.findOne({ Ten: Ten });
     res.json(ketQua);
   } catch (error) {
     res.status(500).json({ message: ERROR.FIND_BY_NAME });
@@ -29,11 +36,10 @@ router.get("/timkiem/ten", auth([]), async (req, res) => {
 });
 
 // Tìm kiếm độc giả theo số điện thoại
-router.get("/timkiem/sodienthoai", auth([ROLES.ADMIN]), async (req, res) => {
+router.get("/timkiem/sdt", auth(), async (req, res) => {
   try {
-    const { DienThoai } = req.query;
-    const ketQua = await DocGia.findOne({ SoDienThoai: DienThoai });
-    // console.log("kq:", ketQua);
+    const { SoDienThoai } = req.query;
+    const ketQua = await DocGia.findOne({ SoDienThoai: SoDienThoai });
     res.json(ketQua);
   } catch (error) {
     res.status(500).json({ message: ERROR.FIND_BY_PHONE });
@@ -111,13 +117,17 @@ router.delete("/delete/:id", auth([ROLES.ADMIN]), async (req, res) => {
   try {
     const { id } = req.params;
     // Kiểm tra xem độc giả có trong theo dõi mượn sách không
-    const isReaderInBorrowingLog = await TheoDoiMuonSach.exists({ docGia: id });
+    const isReaderInBorrowingLog = await TheoDoiMuonSach.exists({
+      MaDocGia: id,
+      TrangThai: LOAN_STATUS.BORROWED,
+    });
     if (isReaderInBorrowingLog) {
       return res.status(400).json({
         message: "Không thể xóa độc giả vì vẫn còn sách đang mượn.",
       });
     }
     // Nếu không có trong theo dõi mượn sách thì tiến hành xóa
+    await TheoDoiMuonSach.deleteMany({ MaDocGia: id });
     await DocGia.findByIdAndDelete(id);
     res.json({ message: SUCCESS.DELETE_ACCOUNT_SUCCESS });
   } catch (error) {

@@ -12,8 +12,9 @@
         <tr>
           <th>Tên sách</th>
           <th>Tác giả</th>
-          <th>Giá sách</th>
+          <th>Giá sách (VND)</th>
           <th>Số quyển</th>
+          <th>Tổng số</th>
           <th>Quản lý</th>
         </tr>
       </thead>
@@ -23,6 +24,9 @@
           <td>{{ book.TacGia }}</td>
           <td>{{ book.DonGia }}</td>
           <td>{{ book.SoQuyen }}</td>
+          <td>
+            {{ book.tongso }}
+          </td>
           <td>
             <font-awesome-icon
               icon="fa-edit"
@@ -45,66 +49,85 @@
     <div v-if="isEditModalOpen" class="edit-modal">
       <div class="modal-content">
         <h3>Chỉnh sửa thông tin sách</h3>
-        <form @submit.prevent="updateBookData">
-          <label>
-            Tên sách:
-            <input v-model="editBook.TenSach" type="text" required />
-          </label>
-          <label>
-            Tác giả:
-            <input v-model="editBook.TacGia" type="text" required />
-          </label>
-          <label>
-            Giá sách:
-            <input v-model="editBook.DonGia" type="number" required />
-          </label>
-          <label>
-            Số quyển:
-            <input v-model="editBook.SoQuyen" type="number" required />
-          </label>
-          <label>
-            Năm xuất bản:
-            <input v-model="editBook.NamXuatBan" type="number" required />
-          </label>
-          <label>
-            Nhà xuất bản:
-            <input v-model="editBook.TenNXB" type="text" required />
-          </label>
-          <button type="submit">Cập nhật</button>
-          <button @click.prevent="closeEditForm">Hủy</button>
+        <form @submit.prevent="updateBookData" class="form-container">
+          <div class="form-group">
+            <label> Tên sách: </label
+            ><input v-model="editBook.TenSach" type="text" required />
+          </div>
+          <div class="form-group">
+            <label> Tác giả: </label
+            ><input v-model="editBook.TacGia" type="text" required />
+          </div>
+          <div class="form-group">
+            <label> Giá sách: (VND)</label
+            ><input v-model="editBook.DonGia" type="number" required />
+          </div>
+          <div class="form-group">
+            <label> Số quyển: </label
+            ><input v-model="editBook.SoQuyen" type="number" required />
+          </div>
+          <div class="form-group">
+            <label> Năm xuất bản: </label
+            ><input v-model="editBook.NamXuatBan" type="number" required />
+          </div>
+          <div class="form-group">
+            <label> Nhà xuất bản: </label
+            ><input v-model="editBook.TenNXB" type="text" required />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Cập nhật</button>
+            <button @click.prevent="closeEditForm" class="btn-secondary">
+              Hủy
+            </button>
+          </div>
         </form>
       </div>
     </div>
+
+    <!-- form thêm sách mới  -->
     <div v-if="isAddBookModalOpen" class="add-modal">
       <div class="modal-content">
         <h3>Thêm sách mới</h3>
-        <form @submit.prevent="addBook">
-          <label>
-            Tên sách:
-            <input v-model="newBook.TenSach" type="text" required />
-          </label>
-          <label>
-            Đơn giá:
-            <input v-model="newBook.DonGia" type="number" required />
-          </label>
-          <label>
-            Số quyển:
-            <input v-model="newBook.SoQuyen" type="number" required />
-          </label>
-          <label>
-            Tác giả:
-            <input v-model="newBook.TacGia" type="text" required />
-          </label>
-          <label>
-            Năm xuất bản:
-            <input v-model="newBook.NamXuatBan" type="number" required />
-          </label>
-          <label>
-            Nhà xuất bản:
-            <input v-model="newBook.TenNXB" type="text" required />
-          </label>
-          <button type="submit" @click.prevent="addBookData">Thêm sách</button>
-          <button @click.prevent="closeAddBookForm">Hủy</button>
+        <form @submit.prevent="addBookData" class="form-container">
+          <div class="form-group">
+            <label> Tên sách: </label
+            ><input v-model="newBook.TenSach" type="text" required />
+          </div>
+          <div class="form-group">
+            <label> Đơn giá: </label
+            ><input v-model="newBook.DonGia" type="number" required />
+          </div>
+          <div class="form-group">
+            <label> Số quyển: </label
+            ><input v-model="newBook.SoQuyen" type="number" required />
+          </div>
+          <div class="form-group">
+            <label> Tác giả: </label
+            ><input v-model="newBook.TacGia" type="text" required />
+          </div>
+          <div class="form-group">
+            <label> Năm xuất bản: </label
+            ><input v-model="newBook.NamXuatBan" type="number" required />
+          </div>
+          <div class="form-group">
+            <label> Nhà xuất bản: </label>
+            <select v-model="newBook.MaNXB" required>
+              <option value="" disabled selected>Chọn nhà xuất bản</option>
+              <option
+                v-for="publisher in nxbs"
+                :key="publisher._id"
+                :value="publisher._id"
+              >
+                {{ publisher.TenNXB }}
+              </option>
+            </select>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Thêm sách</button>
+            <button @click.prevent="closeAddBookForm" class="btn-secondary">
+              Hủy
+            </button>
+          </div>
         </form>
       </div>
     </div>
@@ -121,7 +144,6 @@ import {
 } from "../stores/sach.js";
 import { nxbs, fetchNxbs } from "../stores/nhaxuatban.js";
 import { ref, onMounted } from "vue";
-
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -156,8 +178,8 @@ const newBook = ref({
   TacGia: "",
   DonGia: 0,
   SoQuyen: 0,
-  NamXuatBan: 0,
-  TenNXB: "",
+  NamXuatBan: 2000,
+  MaNXB: "",
 });
 
 // Hàm mở modal thêm sách
@@ -172,6 +194,7 @@ const closeAddBookForm = () => {
 
 // Hàm thêm sách mới
 const addBookData = async () => {
+  console.log("newbook", newBook.value);
   await addBook(newBook.value); // Gọi hàm thêm sách trong store
   closeAddBookForm(); // Đóng modal sau khi thêm
   fetchBooks(); // Làm mới danh sách sách sau khi thêm

@@ -2,7 +2,7 @@
   <div class="container">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg bg-primary px-3">
-      <RouterLink class="navbar-brand" to="/user-home">Thư Viện</RouterLink>
+      <RouterLink class="navbar-brand" to="/user-home">THƯ VIỆN</RouterLink>
       <button
         class="navbar-toggler"
         type="button"
@@ -75,7 +75,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="book in searchResults" :key="book._id">
+              <tr v-for="book in searchResults" :key="book.id">
                 <td>{{ book.TenSach }}</td>
                 <td>{{ book.TacGia }}</td>
                 <td>{{ book.DonGia }}</td>
@@ -97,6 +97,43 @@
         <!-- Hiển thị thành phần SachForUser nếu không tìm kiếm -->
         <SachForUser v-else />
       </div>
+      <!-- Form đăng ký mượn sách -->
+      <div v-if="isAddRequestModalOpen" class="add-modal">
+        <div class="modal-content">
+          <h3>Thêm đơn mượn sách mới</h3>
+          <form @submit.prevent="addRequestData" class="form-container">
+            <div class="form-group">
+              <label> Tên Sách: </label
+              ><input type="text" v-model="newRequest.TenSach" disabled />
+            </div>
+            <div class="form-group">
+              <label> Tên Độc Giả: </label
+              ><input type="text" v-model="newRequest.TenDocGia" disabled />
+            </div>
+            <div class="form-group">
+              <label> SĐT Độc Giả: </label
+              ><input type="text" v-model="newRequest.SoDienThoai" disabled />
+            </div>
+            <div class="form-group">
+              <label> Ngày Mượn: </label
+              ><input v-model="newRequest.NgayMuon" type="date" required />
+            </div>
+            <div class="form-group">
+              <label> Ngày Trả: </label
+              ><input v-model="newRequest.NgayTra" type="date" required />
+            </div>
+            <div class="form-actions">
+              <button type="submit" class="btn-primary">Thêm đơn mượn</button>
+              <button
+                @click.prevent="closeAddRequestForm"
+                class="btn-secondary"
+              >
+                Hủy
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
     </main>
   </div>
 </template>
@@ -110,6 +147,8 @@ import { searchBooksByName, searchBooksByAuthor } from "../stores/sach";
 import { useRoute } from "vue-router";
 import { faEdit, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
+import { fetchBooks } from "../stores/sach.js";
+import { addRequest } from "../stores/theodoimuonsach";
 library.add(faEdit, faTrashAlt);
 
 const router = useRouter();
@@ -170,13 +209,12 @@ const goToUserInfo = () => {
 
 const authStore = useAuthStore();
 const searchResults = ref([]); // Lưu kết quả tìm kiếm
-
 const isSearching = ref(false); // Trạng thái để kiểm tra người dùng có đang tìm kiếm không
-
 const isAddRequestModalOpen = ref(false);
 const newRequest = ref({
   TenSach: "",
   TenDocGia: authStore.user?.Ten, // Tên độc giả lấy từ thông tin đăng nhập
+  SoDienThoai: authStore.user?.SoDienThoai,
   NgayMuon: "",
   NgayTra: "",
 });
@@ -185,6 +223,29 @@ const newRequest = ref({
 const openAddRequestForm = (book) => {
   newRequest.value.TenSach = book.TenSach; // Điền tên sách từ book vào form
   newRequest.value.TenDocGia = authStore.user?.Ten || ""; // Lấy tên người dùng từ auth store
+  newRequest.value.SoDienThoai = authStore.user?.SoDienThoai || "";
   isAddRequestModalOpen.value = true;
 };
+
+// Đóng form thêm đơn mượn
+const closeAddRequestForm = () => {
+  isAddRequestModalOpen.value = false;
+  newRequest.value = {
+    TenSach: "",
+    TenDocGia: authStore.user?.Ten || "", // Reset lại tên độc giả
+    SoDienThoai: authStore.user?.SoDienThoai || "",
+    NgayMuon: "",
+    NgayTra: "",
+  };
+};
+
+// Thêm đơn mượn sách mới
+const addRequestData = async () => {
+  await addRequest(newRequest.value);
+  closeAddRequestForm();
+};
+
+onMounted(() => {
+  fetchBooks();
+});
 </script>

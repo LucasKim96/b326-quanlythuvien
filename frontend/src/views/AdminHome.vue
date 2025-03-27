@@ -35,7 +35,7 @@ const stats = ref([
   { name: "Số lượng sách", value: 0 },
   { name: "Số lượng quyển", value: 0 },
   { name: "Sách đang mượn", value: 0 },
-  { name: "Số lượng người dùng", value: 0 },
+  { name: "Số lượng độc giả", value: 0 },
 ]);
 
 // Lấy dữ liệu từ API

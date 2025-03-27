@@ -47,12 +47,10 @@
     <div v-if="isEditModalOpen" class="edit-modal">
       <div class="modal-content">
         <h3>Chỉnh sửa thông tin Nhà Xuất Bản</h3>
-        <form @submit.prevent="updateNxbData">
-          <div class="form-container">
-            <div class="form-group">
-              <label> Tên Nhà Xuất Bản: </label
-              ><input v-model="editNxb.TenNXB" type="text" required />
-            </div>
+        <form @submit.prevent="updateNxbData" class="form-container">
+          <div class="form-group">
+            <label> Tên Nhà Xuất Bản: </label
+            ><input v-model="editNxb.TenNXB" type="text" required />
           </div>
           <div class="form-group">
             <label> Địa Chỉ: </label
@@ -72,17 +70,21 @@
     <div v-if="isAddNxbModalOpen" class="add-modal">
       <div class="modal-content">
         <h3>Thêm Nhà Xuất Bản Mới</h3>
-        <form @submit.prevent="addNxbData">
-          <label>
-            Tên Nhà Xuất Bản:
-            <input v-model="newNxb.TenNXB" type="text" required />
-          </label>
-          <label>
-            Địa Chỉ:
-            <input v-model="newNxb.DiaChi" type="text" />
-          </label>
-          <button type="submit">Thêm Nhà Xuất Bản</button>
-          <button @click.prevent="closeAddNxbForm">Hủy</button>
+        <form @submit.prevent="addNxbData" class="form-container">
+          <div class="form-group">
+            <label> Tên Nhà Xuất Bản: </label
+            ><input v-model="newNxb.TenNXB" type="text" required />
+          </div>
+          <div class="form-group">
+            <label> Địa Chỉ: </label
+            ><input v-model="newNxb.DiaChi" type="text" />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn-primary">Thêm Nhà Xuất Bản</button>
+            <button @click.prevent="closeAddNxbForm" class="btn-secondary">
+              Hủy
+            </button>
+          </div>
         </form>
       </div>
     </div>
